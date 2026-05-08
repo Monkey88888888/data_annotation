@@ -8,6 +8,14 @@
   </head>
   <body>
     <div class="app-shell">
+      <nav class="utility-rail" aria-label="Application tools">
+        <div class="rail-logo">F</div>
+        <span class="rail-icon active" title="Workspace">▦</span>
+        <span class="rail-icon" title="Datasets">□</span>
+        <span class="rail-icon" title="Review">◇</span>
+        <span class="rail-icon" title="Retrieval">⌁</span>
+        <span class="rail-icon bottom" title="Status">?</span>
+      </nav>
       <aside class="sidebar">
         <div class="brand">
           <div class="brand-mark">HD</div>
@@ -36,6 +44,10 @@
 
       <main class="main">
         <header class="topbar">
+          <div class="topbar-title">
+            <strong>Platform Alpha | Annotation Workflow</strong>
+            <span>Human-in-the-loop qualification for trusted fMRI retrieval</span>
+          </div>
           <form id="proposalForm" class="proposal-form">
             <input
               id="requestInput"
@@ -46,6 +58,11 @@
             />
             <button type="submit">Draft project</button>
           </form>
+          <div class="topbar-actions" aria-label="Runtime status">
+            <span class="runtime-chip live">Active</span>
+            <span class="runtime-chip">2 AI</span>
+            <span class="runtime-chip">3 Human</span>
+          </div>
         </header>
 
         <div class="workspace paged-workspace">
