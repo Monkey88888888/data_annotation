@@ -19,6 +19,15 @@ context.
 
 ## What This Does Now
 
+- Runs an end-to-end local fMRI annotation POC with:
+  - request intake and agent-style project proposals
+  - editable/approvable task specs
+  - seeded OpenNeuro annotation assignments
+  - AI pre-labels with evidence-backed rationales
+  - human annotation and reviewer adjudication
+  - live quality metrics
+  - faceted HDC retrieval with terminal routes for pure retrieval, clean-room text, and image-context manifests
+  - JSONL/CSV export with provenance
 - Defines a first `fmri_scan` archetype with the facets from the blueprint:
   `authority_base`, `type`, `modality`, `strictness`, and `tone`.
 - Scrapes a small file manifest from OpenNeuro using its documented GraphQL API.
@@ -37,6 +46,24 @@ context.
   - emits a pure retrieval package for verified fMRI assets
 
 ## Quick Start
+
+Run the browser POC:
+
+```bash
+PYTHONPATH=src python3 -m data_annotation.demo_server --reset
+```
+
+Open `http://127.0.0.1:8787`.
+
+The server writes mutable demo state and exports under `data/`, which is
+gitignored. The demo starts with OpenNeuro `ds000001` assignments already
+queued, so an operator can approve/edit the rubric, annotate scans, adjudicate
+review items, run faceted retrieval, and export rows without external services.
+
+The POC intentionally uses the standard library HTTP server and static assets so
+it can run in a plain checkout. It preserves the recommended product shape from
+the prototype document while keeping the scientific HDC pipeline as executable
+backend logic.
 
 ```bash
 python3 -m data_annotation.openneuro_scraper \
