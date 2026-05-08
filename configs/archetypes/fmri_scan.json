@@ -1,0 +1,55 @@
+{
+  "id": "fmri_scan",
+  "version": "0.1.0",
+  "description": "Functional MRI assets in BIDS-like neuroimaging datasets.",
+  "dimension": 10000,
+  "facets": [
+    {
+      "name": "authority_base",
+      "seed": "authority:institutional-neuroimaging-repository",
+      "role": "Authority column to be replaced per asset after context-aware heuristics."
+    },
+    {
+      "name": "type",
+      "seed": "type:medical-imaging-timeseries",
+      "value": "medical_imaging_timeseries"
+    },
+    {
+      "name": "modality",
+      "seed": "modality:fmri-nifti-bids",
+      "value": "fMRI_NIfTI_BIDS"
+    },
+    {
+      "name": "strictness",
+      "seed": "strictness:high-ground-truth",
+      "value": "high"
+    },
+    {
+      "name": "tone",
+      "seed": "tone:clinical-research-neutral",
+      "value": "neutral"
+    }
+  ],
+  "source_requirements": {
+    "accepted_formats": [".nii", ".nii.gz", ".json", ".tsv"],
+    "preferred_layout": "BIDS",
+    "minimum_metadata": [
+      "dataset_id",
+      "snapshot_tag",
+      "path",
+      "size",
+      "annexed"
+    ]
+  },
+  "authority_rubric": {
+    "repository": "OpenNeuro",
+    "checks": [
+      "public dataset accession",
+      "versioned snapshot tag",
+      "BIDS file tree",
+      "functional imaging path under subject func directory",
+      "sidecar metadata presence"
+    ]
+  }
+}
+
