@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>fMRI Annotation POC</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">HD</div>
+          <div>
+            <strong>FacetLab fMRI</strong>
+            <span>annotation console</span>
+          </div>
+        </div>
+        <nav id="projectList" class="project-list" aria-label="Projects"></nav>
+        <button id="resetBtn" class="secondary full-width" type="button">Reset demo</button>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <form id="proposalForm" class="proposal-form">
+            <input
+              id="requestInput"
+              name="request"
+              type="text"
+              autocomplete="off"
+              value="Qualify OpenNeuro fMRI BIDS assets for high-authority retrieval."
+            />
+            <button type="submit">Draft project</button>
+          </form>
+        </header>
+
+        <div class="workspace">
+          <section class="column column-left">
+            <section class="panel" id="projectPanel"></section>
+            <section class="panel" id="specPanel"></section>
+            <section class="panel" id="activityPanel"></section>
+          </section>
+
+          <section class="column column-center">
+            <section class="panel task-panel" id="taskPanel"></section>
+            <section class="panel" id="queuePanel"></section>
+          </section>
+
+          <section class="column column-right">
+            <section class="panel scan-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="eyebrow">Vector Evidence</span>
+                  <h2>Faceted scan view</h2>
+                </div>
+              </div>
+              <canvas id="scanCanvas" width="720" height="420" aria-label="fMRI vector preview"></canvas>
+            </section>
+            <section class="panel" id="qualityPanel"></section>
+            <section class="panel" id="retrievalPanel"></section>
+            <section class="panel" id="exportPanel"></section>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
