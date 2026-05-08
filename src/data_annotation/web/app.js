@@ -77,6 +77,7 @@ function render() {
   renderExportPanel();
   renderActivityPanel();
   drawScan(snapshot.current_assignment || snapshot.review_assignment);
+  renderAssetPreview(snapshot.current_assignment || snapshot.review_assignment);
   bindDynamicActions();
 }
 
@@ -173,6 +174,19 @@ function annotationHtml(view) {
     <div class="detail field-wide">
       <span>Source</span>
       <strong>${escapeHtml(item.source_uri || item.id)}</strong>
+    </div>
+    <div id="assetPreviewPanel" class="asset-preview-panel" data-item-id="${escapeHtml(item.id)}">
+      <div class="asset-preview-header">
+        <div>
+          <span class="eyebrow">Source Asset</span>
+          <strong>${escapeHtml(asset.path || item.source_uri || item.id)}</strong>
+        </div>
+        <a id="sourceDownloadLink" class="source-link" href="#" target="_blank" rel="noreferrer">Open source</a>
+      </div>
+      <div class="asset-preview-grid">
+        <canvas id="niftiPreviewCanvas" width="256" height="256" aria-label="NIfTI slice preview"></canvas>
+        <div id="assetPreviewMeta" class="asset-preview-meta">Loading preview...</div>
+      </div>
     </div>
     ${checksHtml((item.payload_json || {}).authority_checks)}
     <div class="prelabel">
@@ -324,12 +338,88 @@ function retrievalResultsHtml(run) {
           (result) => `<div class="result-item">
             <strong>${escapeHtml(result.path)}</strong>
             <div class="muted">score ${numberText(result.score)} | authority ${numberText(result.authority_score)} | ${escapeHtml(result.terminal_route || "retrieval")}</div>
+            ${openNeuroLink(result.dataset_id, result.path)}
           </div>`,
         )
         .join("")}
     </div>
     <div class="export-box"><code>${escapeHtml(JSON.stringify(run.terminal_output || {}, null, 2))}</code></div>
   `;
+}
+
+async function renderAssetPreview(view) {
+  const panel = document.getElementById("assetPreviewPanel");
+  if (!panel || !view?.item?.id) return;
+  const meta = document.getElementById("assetPreviewMeta");
+  const link = document.getElementById("sourceDownloadLink");
+  const canvas = document.getElementById("niftiPreviewCanvas");
+  try {
+    const preview = await api(`/api/assets/${encodeURIComponent(view.item.id)}/preview`);
+    if (link && preview.source_url) {
+      link.href = preview.source_url;
+      link.textContent = preview.local_payload_present ? "Open/download source" : "Download from OpenNeuro";
+    }
+    if (preview.renderable) {
+      drawNiftiPreview(canvas, preview);
+      meta.innerHTML = `
+        <div class="detail-grid compact">
+          ${detail("Preview", `slice ${preview.z_index + 1}/${preview.depth}`)}
+          ${detail("Shape", `${preview.width} x ${preview.height}`)}
+          ${detail("Payload", "local")}
+          ${detail("Datatype", preview.datatype)}
+        </div>
+        <p class="muted">Rendered from the downloaded NIfTI payload. Browser preview is a normalized middle axial slice.</p>
+      `;
+    } else {
+      clearPreviewCanvas(canvas, "Metadata only");
+      meta.innerHTML = `
+        <div class="detail-grid compact">
+          ${detail("Payload", preview.local_payload_present ? "local" : "not downloaded")}
+          ${detail("Preview", "unavailable")}
+        </div>
+        <p class="muted">Use the source link to download the NIfTI payload. Raw .nii.gz files are not browser images, so this panel renders only when a local payload is available.</p>
+      `;
+    }
+  } catch (error) {
+    clearPreviewCanvas(canvas, "Preview error");
+    meta.textContent = error.message;
+  }
+}
+
+function drawNiftiPreview(canvas, preview) {
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  canvas.width = preview.width;
+  canvas.height = preview.height;
+  const image = ctx.createImageData(preview.width, preview.height);
+  preview.pixels.forEach((pixel, index) => {
+    const value = Number(pixel);
+    const offset = index * 4;
+    image.data[offset] = value;
+    image.data[offset + 1] = value;
+    image.data[offset + 2] = value;
+    image.data[offset + 3] = 255;
+  });
+  ctx.putImageData(image, 0, 0);
+}
+
+function clearPreviewCanvas(canvas, message) {
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  canvas.width = 256;
+  canvas.height = 256;
+  ctx.fillStyle = "#0b1118";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#8fa0b1";
+  ctx.font = "700 16px system-ui";
+  ctx.textAlign = "center";
+  ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+}
+
+function openNeuroLink(datasetId, path) {
+  if (!datasetId || !path) return "";
+  const url = `https://s3.amazonaws.com/openneuro.org/${encodeURIComponent(datasetId)}/${path.split("/").map(encodeURIComponent).join("/")}`;
+  return `<a class="source-link inline" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open source payload</a>`;
 }
 
 function renderExportPanel() {

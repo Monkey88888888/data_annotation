@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import mimetypes
+import struct
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -49,6 +51,9 @@ class DemoRequestHandler(BaseHTTPRequestHandler):
                 project_id = single(query, "project_id") or state.get("meta", {}).get("active_project_id")
                 role = single(query, "role") or "annotator"
                 self.send_json(demo_poc.next_assignment(state, project_id, role) or {})
+                return
+            if len(segments) == 4 and segments[:2] == ["api", "assets"] and segments[3] == "preview":
+                self.send_json(asset_preview(state, segments[2]))
                 return
             self.send_error(404)
         except Exception as exc:  # pragma: no cover - exercised by browser.
@@ -191,6 +196,131 @@ def path_segments(path: str) -> list[str]:
 def single(query: dict[str, list[str]], key: str) -> str | None:
     values = query.get(key) or []
     return values[0] if values else None
+
+
+def asset_preview(state: dict[str, Any], item_id: str) -> dict[str, Any]:
+    item = state.get("dataset_items", {}).get(item_id)
+    if not item:
+        raise ValueError("asset item not found")
+
+    payload = item.get("payload_json") or {}
+    asset = payload.get("asset") or {}
+    asset_path = str(asset.get("path") or "")
+    local_path = local_payload_path(payload)
+    preview: dict[str, Any] = {
+        "item_id": item_id,
+        "source_uri": item.get("source_uri"),
+        "source_url": openneuro_source_url(asset.get("dataset_id"), asset_path),
+        "asset_path": asset_path,
+        "local_path": str(local_path) if local_path else None,
+        "local_payload_present": bool(local_path and local_path.exists()),
+        "renderable": False,
+    }
+    if local_path and local_path.exists():
+        preview.update(read_nifti_preview(local_path))
+    return preview
+
+
+def openneuro_source_url(dataset_id: Any, asset_path: str) -> str | None:
+    if not dataset_id or not asset_path:
+        return None
+    return f"https://s3.amazonaws.com/openneuro.org/{dataset_id}/{asset_path}"
+
+
+def local_payload_path(payload: dict[str, Any]) -> Path | None:
+    evidence = payload.get("local_evidence") or {}
+    raw_path = evidence.get("payload_path")
+    if not raw_path:
+        return None
+    path = Path(str(raw_path))
+    if path.is_absolute():
+        return path
+    return demo_poc.REPO_ROOT / path
+
+
+def read_nifti_preview(path: Path) -> dict[str, Any]:
+    with open_maybe_gzip(path) as handle:
+        header = handle.read(348)
+        if len(header) < 348:
+            return {"renderable": False, "error": "NIfTI header is too short"}
+        sizeof_hdr = struct.unpack("<i", header[0:4])[0]
+        dimensions = list(struct.unpack("<8h", header[40:56]))
+        datatype = struct.unpack("<h", header[70:72])[0]
+        vox_offset = int(struct.unpack("<f", header[108:112])[0])
+        magic = header[344:348].rstrip(b"\x00").decode("ascii", errors="replace")
+        if sizeof_hdr != 348 or magic not in {"n+1", "ni1"}:
+            return {"renderable": False, "error": "Invalid NIfTI-1 header"}
+        if dimensions[0] < 3:
+            return {"renderable": False, "error": "NIfTI preview needs at least 3 dimensions"}
+
+        width = int(dimensions[1])
+        height = int(dimensions[2])
+        depth = int(dimensions[3])
+        z_index = max(0, depth // 2)
+        type_info = nifti_datatype(datatype)
+        if type_info is None:
+            return {"renderable": False, "error": f"Unsupported NIfTI datatype {datatype}"}
+
+        handle.seek(vox_offset)
+        data = handle.read()
+
+    values = extract_nifti_slice(data, width, height, depth, z_index, type_info)
+    pixels = normalize_pixels(values)
+    return {
+        "renderable": True,
+        "width": width,
+        "height": height,
+        "z_index": z_index,
+        "depth": depth,
+        "datatype": datatype,
+        "pixels": pixels,
+    }
+
+
+def open_maybe_gzip(path: Path):
+    return gzip.open(path, "rb") if path.name.endswith(".gz") else path.open("rb")
+
+
+def nifti_datatype(datatype: int) -> tuple[str, int] | None:
+    return {
+        2: ("<B", 1),
+        4: ("<h", 2),
+        8: ("<i", 4),
+        16: ("<f", 4),
+        64: ("<d", 8),
+    }.get(datatype)
+
+
+def extract_nifti_slice(
+    data: bytes,
+    width: int,
+    height: int,
+    depth: int,
+    z_index: int,
+    type_info: tuple[str, int],
+) -> list[float]:
+    fmt, byte_width = type_info
+    values: list[float] = []
+    plane_offset = z_index * width * height * byte_width
+    max_offset = len(data) - byte_width
+    for y in range(height):
+        for x in range(width):
+            offset = plane_offset + ((y * width) + x) * byte_width
+            if offset > max_offset:
+                values.append(0.0)
+            else:
+                values.append(float(struct.unpack_from(fmt, data, offset)[0]))
+    return values
+
+
+def normalize_pixels(values: list[float]) -> list[int]:
+    if not values:
+        return []
+    low = min(values)
+    high = max(values)
+    if high == low:
+        return [0 for _ in values]
+    return [max(0, min(255, round(((value - low) / (high - low)) * 255))) for value in values]
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
