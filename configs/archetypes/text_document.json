@@ -1,0 +1,48 @@
+{
+  "id": "text_document",
+  "version": "0.1.0",
+  "description": "Business text assets (sales emails, landing-page copy, marketing collateral).",
+  "dimension": 10000,
+  "facets": [
+    {
+      "name": "authority_base",
+      "seed": "authority:business-text-source",
+      "role": "Authority column to be replaced per asset after heuristic + LLM-attested source checks."
+    },
+    {
+      "name": "type",
+      "seed": "type:business-text",
+      "value": "business_text"
+    },
+    {
+      "name": "modality",
+      "seed": "modality:b2b-email-or-landing-page",
+      "value": "b2b_or_landing"
+    },
+    {
+      "name": "strictness",
+      "seed": "strictness:llm-annotated",
+      "value": "llm_annotated"
+    },
+    {
+      "name": "tone",
+      "seed": "tone:llm-annotated",
+      "value": "llm_annotated"
+    }
+  ],
+  "source_requirements": {
+    "accepted_formats": [".txt", ".md", ".html"],
+    "minimum_metadata": [
+      "source_url_or_origin",
+      "captured_at"
+    ]
+  },
+  "authority_rubric": {
+    "checks": [
+      "source domain is on the allow-list",
+      "captured_at within last 365 days",
+      "non-empty payload",
+      "encoding is utf-8"
+    ]
+  }
+}
