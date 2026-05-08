@@ -1,5 +1,6 @@
 let snapshot = null;
 let lastExport = null;
+let activePageName = "setup";
 
 document.addEventListener("DOMContentLoaded", async () => {
   bindStaticActions();
@@ -7,6 +8,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function bindStaticActions() {
+  document.querySelectorAll("[data-page]").forEach((button) => {
+    button.addEventListener("click", () => {
+      setActivePage(button.dataset.page);
+    });
+  });
+
   document.getElementById("proposalForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const input = document.getElementById("requestInput");
@@ -25,6 +32,17 @@ function bindStaticActions() {
     lastExport = null;
     render();
   });
+}
+
+function setActivePage(pageName) {
+  activePageName = pageName;
+  document.querySelectorAll("[data-page]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.page === activePageName);
+  });
+  document.querySelectorAll("[data-page-panel]").forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.pagePanel === activePageName);
+  });
+  drawScan(snapshot?.current_assignment || snapshot?.review_assignment);
 }
 
 async function loadState() {
@@ -48,6 +66,7 @@ async function api(path, options = {}) {
 
 function render() {
   if (!snapshot) return;
+  setActivePage(activePageName);
   renderProjectList();
   renderProjectPanel();
   renderSpecPanel();

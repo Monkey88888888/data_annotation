@@ -113,7 +113,7 @@ label {
   color: #f8fff8;
   padding: 18px;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(120px, 1fr) auto auto;
   gap: 18px;
   border-right: 1px solid #0d140f;
 }
@@ -153,6 +153,7 @@ label {
   align-content: start;
   gap: 8px;
   overflow: auto;
+  min-height: 0;
 }
 
 .project-tab {
@@ -179,6 +180,36 @@ label {
   margin-top: 3px;
 }
 
+.workflow-nav {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.workflow-tab {
+  width: 100%;
+  min-height: 64px;
+  text-align: left;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f6fff8;
+}
+
+.workflow-tab:hover,
+.workflow-tab.active {
+  background: #aee8d8;
+  color: #102018;
+  border-color: #aee8d8;
+}
+
+.workflow-tab span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.76;
+}
+
 .main {
   min-width: 0;
   display: grid;
@@ -202,17 +233,39 @@ label {
 }
 
 .workspace {
-  display: grid;
-  grid-template-columns: minmax(230px, 0.8fr) minmax(420px, 1.35fr) minmax(300px, 0.9fr);
-  gap: 14px;
   padding: 14px;
+}
+
+.page {
+  display: none;
+  min-width: 0;
+}
+
+.page.active {
+  display: grid;
+  gap: 14px;
+}
+
+.page-setup {
+  grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.2fr);
+}
+
+.page-setup #activityPanel {
+  grid-column: 1 / -1;
+}
+
+.page-annotate {
+  grid-template-columns: minmax(460px, 1.35fr) minmax(300px, 0.75fr);
   align-items: start;
 }
 
-.column {
-  display: grid;
-  gap: 14px;
-  min-width: 0;
+.page-review {
+  grid-template-columns: minmax(420px, 1.2fr) minmax(300px, 0.8fr);
+  align-items: start;
+}
+
+.page-review .scan-panel {
+  grid-row: span 3;
 }
 
 .panel {
@@ -534,13 +587,10 @@ input[type="range"] {
 }
 
 @media (max-width: 1180px) {
-  .workspace {
-    grid-template-columns: minmax(260px, 0.9fr) minmax(420px, 1.2fr);
-  }
-
-  .column-right {
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .page-setup,
+  .page-annotate,
+  .page-review {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -551,15 +601,18 @@ input[type="range"] {
 
   .sidebar {
     position: static;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto auto auto;
   }
 
   .project-list {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
 
-  .workspace,
-  .column-right {
+  .workflow-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .workspace {
     grid-template-columns: 1fr;
   }
 

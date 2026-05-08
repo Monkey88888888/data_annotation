@@ -17,6 +17,20 @@
           </div>
         </div>
         <nav id="projectList" class="project-list" aria-label="Projects"></nav>
+        <nav class="workflow-nav" aria-label="Workflow pages">
+          <button class="workflow-tab active" data-page="setup" type="button">
+            1. Setup
+            <span>project, rubric, activity</span>
+          </button>
+          <button class="workflow-tab" data-page="annotate" type="button">
+            2. Annotate
+            <span>task, labels, queue</span>
+          </button>
+          <button class="workflow-tab" data-page="review" type="button">
+            3. Review
+            <span>evidence, retrieval, export</span>
+          </button>
+        </nav>
         <button id="resetBtn" class="secondary full-width" type="button">Reset demo</button>
       </aside>
 
@@ -34,19 +48,19 @@
           </form>
         </header>
 
-        <div class="workspace">
-          <section class="column column-left">
+        <div class="workspace paged-workspace">
+          <section class="page page-setup active" data-page-panel="setup">
             <section class="panel" id="projectPanel"></section>
             <section class="panel" id="specPanel"></section>
             <section class="panel" id="activityPanel"></section>
           </section>
 
-          <section class="column column-center">
+          <section class="page page-annotate" data-page-panel="annotate">
             <section class="panel task-panel" id="taskPanel"></section>
             <section class="panel" id="queuePanel"></section>
           </section>
 
-          <section class="column column-right">
+          <section class="page page-review" data-page-panel="review">
             <section class="panel scan-panel">
               <div class="panel-heading">
                 <div>
