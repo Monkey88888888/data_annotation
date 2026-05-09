@@ -11,7 +11,10 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, unquote, urlparse
 
+import base64
+
 from data_annotation import demo_poc
+from data_annotation.annotator.image import annotate_image
 from data_annotation.annotator.text import annotate_text
 
 
@@ -158,6 +161,26 @@ class DemoRequestHandler(BaseHTTPRequestHandler):
                     raise ValueError("text is required")
                 result = annotate_text(text, client=HeuristicTextClient())
                 self.send_json({"annotation": result.to_db_row(), "text_length": len(text)})
+                return
+
+            if segments == ["api", "text", "search"]:
+                self.send_json(_run_search(payload, archetype_filter="text_document"))
+                return
+
+            if segments == ["api", "text", "generate"]:
+                self.send_json(_run_text_generate(payload))
+                return
+
+            if segments == ["api", "image", "annotate"]:
+                self.send_json(_run_image_annotate(payload))
+                return
+
+            if segments == ["api", "image", "search"]:
+                self.send_json(_run_search(payload, archetype_filter="image_asset"))
+                return
+
+            if segments == ["api", "image", "generate"]:
+                self.send_json(_run_image_brief(payload))
                 return
 
             self.send_error(404)
@@ -380,6 +403,126 @@ def count_hits(text: str, terms: tuple[str, ...]) -> int:
 
 def clamp01(value: float) -> float:
     return round(max(0.0, min(1.0, value)), 3)
+
+
+# ---------------------------------------------------------------------------
+# Tier-2 retrieval / generation handlers (text + image).
+#
+# These call the live Pinecone index + Anthropic API. They fail loudly with
+# a JSON error if the corresponding env vars are missing, so the existing
+# heuristic-only flows (e.g. /api/text/annotate) keep working without keys.
+# ---------------------------------------------------------------------------
+
+def _facet_weights_from_payload(payload: dict[str, Any]) -> dict[str, float]:
+    return {
+        "authority": float(payload.get("authority_weight", 1.0)),
+        "type": float(payload.get("type_weight", 1.0)),
+        "modality": float(payload.get("modality_weight", 1.0)),
+        "strictness": float(payload.get("strictness_weight", 1.0)),
+        "tone": float(payload.get("tone_weight", 0.2)),
+    }
+
+
+def _run_search(payload: dict[str, Any], *, archetype_filter: str) -> dict[str, Any]:
+    from data_annotation.pinecone_search import search
+
+    prompt = str(payload.get("prompt") or "").strip()
+    if not prompt:
+        raise ValueError("prompt is required")
+    plan = bool(payload.get("plan"))
+    top_k = int(payload.get("top_k") or 5)
+
+    matches = search(
+        prompt,
+        weights=None if plan else _facet_weights_from_payload(payload),
+        plan_prompt=plan,
+        top_k=top_k,
+        archetype_filter=archetype_filter,
+        enrich=bool(payload.get("enrich", True)),
+    )
+    return {
+        "matches": [
+            {
+                "document_id": match.document_id,
+                "score": match.score,
+                "metadata": match.metadata,
+                "document": match.document,
+            }
+            for match in matches
+        ],
+        "archetype_filter": archetype_filter,
+        "planned_weights_used": plan,
+    }
+
+
+def _run_text_generate(payload: dict[str, Any]) -> dict[str, Any]:
+    from data_annotation.generator import generate_text_from_context
+    from data_annotation.pinecone_search import search
+
+    prompt = str(payload.get("prompt") or "").strip()
+    if not prompt:
+        raise ValueError("prompt is required")
+    plan = bool(payload.get("plan"))
+    top_k = int(payload.get("top_k") or 3)
+
+    matches = search(
+        prompt,
+        weights=None if plan else _facet_weights_from_payload(payload),
+        plan_prompt=plan,
+        top_k=top_k,
+        archetype_filter="text_document",
+        enrich=True,
+    )
+    examples = [match.document for match in matches if match.document]
+    generated = generate_text_from_context(prompt, examples)
+    return {
+        "generated_text": generated,
+        "retrieved_count": len(matches),
+        "sources": [
+            {"document_id": m.document_id, "source_name": (m.document or {}).get("source_name")}
+            for m in matches
+        ],
+    }
+
+
+def _run_image_annotate(payload: dict[str, Any]) -> dict[str, Any]:
+    image_b64 = payload.get("image_base64") or ""
+    media_type = payload.get("media_type") or "image/png"
+    if not image_b64:
+        raise ValueError("image_base64 is required")
+    data = base64.b64decode(image_b64)
+    result = annotate_image(data, media_type=str(media_type))
+    return {"annotation": result.to_db_row(), "byte_count": len(data)}
+
+
+def _run_image_brief(payload: dict[str, Any]) -> dict[str, Any]:
+    from data_annotation.generator import generate_image_brief_from_context
+    from data_annotation.pinecone_search import search
+
+    prompt = str(payload.get("prompt") or "").strip()
+    if not prompt:
+        raise ValueError("prompt is required")
+    plan = bool(payload.get("plan"))
+    top_k = int(payload.get("top_k") or 3)
+
+    matches = search(
+        prompt,
+        weights=None if plan else _facet_weights_from_payload(payload),
+        plan_prompt=plan,
+        top_k=top_k,
+        archetype_filter="image_asset",
+        enrich=True,
+    )
+    examples = [match.document for match in matches if match.document]
+    brief = generate_image_brief_from_context(prompt, examples)
+    return {
+        "brief_text": brief,
+        "retrieved_count": len(matches),
+        "sources": [
+            {"document_id": m.document_id, "source_name": (m.document or {}).get("source_name")}
+            for m in matches
+        ],
+    }
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
