@@ -10,6 +10,10 @@ CREATE TABLE IF NOT EXISTS documents_raw (
     source_name     VARCHAR(255),
     content_payload TEXT,                 -- raw text OR an s3:// / https:// URI for binary assets
 
+    -- Routing for the annotator runner. 'text_document' | 'image_asset' |
+    -- 'fmri_scan' (the last is handled by ingestion.py, not the annotator).
+    archetype_id    VARCHAR(64),
+
     -- Pipeline status
     is_processed    BOOLEAN DEFAULT FALSE,
 
@@ -38,6 +42,9 @@ CREATE TABLE IF NOT EXISTS documents_raw (
     tone_aggressiveness FLOAT DEFAULT 0.0,
     tone_creativity     FLOAT DEFAULT 0.0
 );
+
+-- Idempotent: lets old projects pick up the column without dropping the table.
+ALTER TABLE documents_raw ADD COLUMN IF NOT EXISTS archetype_id VARCHAR(64);
 
 -- Partial index: ingestion worker fetches un-processed rows in O(log n).
 CREATE INDEX IF NOT EXISTS idx_unprocessed_documents

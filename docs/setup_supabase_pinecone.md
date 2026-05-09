@@ -96,18 +96,41 @@ print(pc.describe_index("hdc-rag-1536"))
 Your data person can now log into Supabase, click **Table Editor →
 documents_raw**, and start filling rows by hand:
 
-- Sales copy: paste the text into `content_payload`, flip `type_text`
-  and the appropriate `modality_*` boolean, set the tone/strictness
-  floats. Leave fMRI fields at default.
-- fMRI scan: paste the S3/HTTPS URI into `content_payload`, flip
-  `type_timeseries` + `modality_fmri_bold` (or `_t1`), set
-  `auth_institution`. Leave tone fields at default.
-- Always leave `is_processed` = FALSE — the ingestion worker flips it.
+- **Sales copy:** paste the text into `content_payload`, set
+  `archetype_id = 'text_document'`. The annotator fills in the
+  type/modality/strictness/tone columns automatically.
+- **Image asset:** paste the local filesystem path into `content_payload`,
+  set `archetype_id = 'image_asset'`. The annotator fetches the bytes,
+  calls vision Sonnet, and fills in the facets.
+- **fMRI scan:** paste the S3/HTTPS URI into `content_payload`, set
+  `archetype_id = 'fmri_scan'`. The runner skips fMRI rows — they go
+  through `ingestion.py` (struct-parsed NIfTI rubric), not the LLM
+  annotator.
+- Always leave `is_processed` = FALSE — the runner flips it after
+  annotation.
 
 ---
 
-## 4. Next step
+## 4. Run the annotator
 
-The Python ingestion script (Postgres → Jordan blocks → LLM lift →
-Pinecone) plugs into `SupabaseClient.fetch_unprocessed()` and
-`mark_processed()`. That is the next module to build.
+Once rows are queued, run the annotator loop:
+
+```bash
+python -m data_annotation.runner                  # processes up to 50 rows
+python -m data_annotation.runner --batch-size 10
+python -m data_annotation.runner --dry-run        # logs only, no DB writes
+```
+
+For each unprocessed row the runner: hashes the payload, checks the
+`annotations` cache, calls the registered annotator on a miss, upserts
+into `annotations`, copies the facet values into `documents_raw`, and
+flips `is_processed = TRUE`. Re-running on the same payload is a cache
+hit and does not re-bill the API.
+
+---
+
+## 5. Next step
+
+The HDC pipeline downstream (Jordan-block expansion, manifold
+projection, Pinecone push) plugs into `documents_raw` rows where
+`is_processed = TRUE`. That wiring is the next module.

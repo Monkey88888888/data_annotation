@@ -17,6 +17,7 @@ class DocumentRow:
 
     source_name: str | None = None
     content_payload: str | None = None
+    archetype_id: str | None = None     # routes the annotator runner
     is_processed: bool = False
 
     auth_domain: float = 0.0
@@ -47,6 +48,10 @@ class DocumentRow:
         # Let Postgres assign id + created_at on insert.
         payload.pop("id", None)
         payload.pop("created_at", None)
+        # archetype_id is nullable — drop it from the payload when unset
+        # so the column default (NULL) applies cleanly.
+        if payload.get("archetype_id") is None:
+            payload.pop("archetype_id", None)
         return payload
 
 
