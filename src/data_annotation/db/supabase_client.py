@@ -19,6 +19,7 @@ class DocumentRow:
     content_payload: str | None = None
     archetype_id: str | None = None     # routes the annotator runner
     is_processed: bool = False
+    is_indexed: bool = False
 
     auth_domain: float = 0.0
     auth_author: float = 0.0
@@ -87,10 +88,31 @@ class SupabaseClient:
         )
         return result.data
 
+    def fetch_processed_unindexed(self, limit: int = 50) -> list[dict[str, Any]]:
+        """Rows ready for the Tier-2 indexer: facets filled, not yet pushed to Pinecone."""
+        result = (
+            self._client.table(TABLE)
+            .select("*")
+            .eq("is_processed", True)
+            .eq("is_indexed", False)
+            .limit(limit)
+            .execute()
+        )
+        return result.data
+
     def mark_processed(self, row_id: str) -> dict[str, Any]:
         result = (
             self._client.table(TABLE)
             .update({"is_processed": True})
+            .eq("id", row_id)
+            .execute()
+        )
+        return result.data[0]
+
+    def mark_indexed(self, row_id: str) -> dict[str, Any]:
+        result = (
+            self._client.table(TABLE)
+            .update({"is_indexed": True})
             .eq("id", row_id)
             .execute()
         )

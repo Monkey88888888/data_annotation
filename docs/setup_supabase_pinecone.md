@@ -129,8 +129,31 @@ hit and does not re-bill the API.
 
 ---
 
-## 5. Next step
+## 5. Push to Pinecone (Tier-2 indexer)
 
-The HDC pipeline downstream (Jordan-block expansion, manifold
-projection, Pinecone push) plugs into `documents_raw` rows where
-`is_processed = TRUE`. That wiring is the next module.
+Once a row is annotated (`is_processed = TRUE`), the Tier-2 indexer
+projects its HDC vector down to the manifold dimension and pushes it
+into the Pinecone `annotation` index:
+
+```bash
+python -m data_annotation.indexer                          # processes up to 50 ready rows
+python -m data_annotation.indexer --batch-size 10
+python -m data_annotation.indexer --dry-run                # build manifolds, skip Pinecone + DB
+python -m data_annotation.indexer --manifold-dimension 256
+```
+
+For each row the indexer:
+
+1. Reads the documents_raw row (facets + archetype_id).
+2. Loads the matching archetype config and builds the asset dict the
+   existing `pipeline.py` consumes.
+3. Calls `pipeline.build_manifold_record(asset, 256)` to get a 256D
+   manifold vector keyed by facet sectors.
+4. Upserts the vector into Pinecone with `documents_raw.id` as the
+   vector id and a small metadata dict (archetype_id, source_name,
+   type flags).
+5. Flips `is_indexed = TRUE` so the row is not re-pushed.
+
+This is a separate stage from the annotator runner specifically so you
+can re-index (different manifold dimension, different facet weighting)
+without re-billing the LLM annotator.

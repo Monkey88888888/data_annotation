@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS documents_raw (
     archetype_id    VARCHAR(64),
 
     -- Pipeline status
-    is_processed    BOOLEAN DEFAULT FALSE,
+    is_processed    BOOLEAN DEFAULT FALSE,    -- annotator runner has filled facets
+    is_indexed      BOOLEAN DEFAULT FALSE,    -- indexer has pushed manifold to Pinecone
 
     -- BLOCK 1: AUTHORITY (continuous 0.0..1.0)
     auth_domain         FLOAT DEFAULT 0.0,
@@ -43,10 +44,16 @@ CREATE TABLE IF NOT EXISTS documents_raw (
     tone_creativity     FLOAT DEFAULT 0.0
 );
 
--- Idempotent: lets old projects pick up the column without dropping the table.
+-- Idempotent: lets old projects pick up the columns without dropping the table.
 ALTER TABLE documents_raw ADD COLUMN IF NOT EXISTS archetype_id VARCHAR(64);
+ALTER TABLE documents_raw ADD COLUMN IF NOT EXISTS is_indexed BOOLEAN DEFAULT FALSE;
 
 -- Partial index: ingestion worker fetches un-processed rows in O(log n).
 CREATE INDEX IF NOT EXISTS idx_unprocessed_documents
     ON documents_raw (is_processed)
     WHERE is_processed = FALSE;
+
+-- Partial index: indexer fetches processed-but-not-yet-indexed rows.
+CREATE INDEX IF NOT EXISTS idx_processed_unindexed_documents
+    ON documents_raw (is_processed, is_indexed)
+    WHERE is_processed = TRUE AND is_indexed = FALSE;
