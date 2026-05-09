@@ -314,3 +314,206 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ------------------------------------------------------------------- *
+ * Document detail modal (operate-on-retrieved)
+ * ------------------------------------------------------------------- */
+
+.doc-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 12, 0.78);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 56px 24px;
+  overflow-y: auto;
+}
+
+.doc-modal.hidden {
+  display: none;
+}
+
+.doc-modal-card {
+  width: min(960px, 100%);
+  background: #11161d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.doc-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.doc-modal-head h2 {
+  margin: 4px 0 0;
+  font-size: 18px;
+}
+
+.doc-modal-head .secondary {
+  font-size: 22px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  line-height: 1;
+}
+
+.doc-modal-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px 24px 0;
+}
+
+.doc-modal-payload {
+  min-height: 80px;
+}
+
+.doc-modal-text {
+  white-space: pre-wrap;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  max-height: 360px;
+  overflow: auto;
+  color: rgba(247, 249, 252, 0.92);
+}
+
+.doc-modal-image {
+  max-width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.doc-modal-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.doc-modal-meta .detail {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 12px;
+}
+
+.doc-modal-meta .detail span {
+  color: rgba(247, 249, 252, 0.55);
+}
+
+.doc-modal-meta .detail strong {
+  font-weight: 500;
+  word-break: break-all;
+  text-align: right;
+}
+
+.doc-modal-facets {
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.facet-edit-section h3 {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(247, 249, 252, 0.6);
+  margin: 0 0 8px;
+}
+
+.facet-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.facet-edit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 12.5px;
+}
+
+.facet-edit-row span {
+  color: rgba(247, 249, 252, 0.7);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.facet-edit-row input[type="number"] {
+  width: 80px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.facet-edit-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+.doc-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.doc-modal-status {
+  font-size: 12px;
+  color: rgba(247, 249, 252, 0.6);
+}
+
+.visual-match-row.clickable {
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.visual-match-row.clickable:hover {
+  border-color: rgba(120, 192, 255, 0.5);
+  background: rgba(120, 192, 255, 0.05);
+}
+
+@media (max-width: 720px) {
+  .doc-modal-content {
+    grid-template-columns: 1fr;
+  }
+  .facet-edit-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -416,8 +416,33 @@
       </section>
     </div>
 
+    <div id="docDetailModal" class="doc-modal hidden" role="dialog" aria-modal="true" aria-labelledby="docModalTitle">
+      <div class="doc-modal-card">
+        <header class="doc-modal-head">
+          <div>
+            <span class="eyebrow" id="docModalArchetype">document</span>
+            <h2 id="docModalTitle">Document detail</h2>
+          </div>
+          <button class="secondary" id="docModalClose" type="button" aria-label="Close">&times;</button>
+        </header>
+        <section class="doc-modal-content">
+          <div class="doc-modal-payload" id="docModalPayload"></div>
+          <div class="doc-modal-meta" id="docModalMeta"></div>
+        </section>
+        <section class="doc-modal-facets" id="docModalFacets"></section>
+        <footer class="doc-modal-actions">
+          <span id="docModalStatus" class="doc-modal-status"></span>
+          <div class="actions">
+            <button class="secondary" id="docReannotateBtn" type="button">Re-annotate</button>
+            <button id="docSaveEditsBtn" type="button" disabled>Save edits</button>
+          </div>
+        </footer>
+      </div>
+    </div>
+
     <script src="/app.js"></script>
     <script src="/visual.js" defer></script>
     <script src="/text.js" defer></script>
+    <script src="/detail.js" defer></script>
   </body>
 </html>

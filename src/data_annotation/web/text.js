@@ -147,7 +147,7 @@
     out.innerHTML = matches.map(function (m, i) {
       const doc = m.document || {};
       const snippet = (doc.content_payload || "").slice(0, 220);
-      return '<div class="visual-match-row">' +
+      return '<button type="button" class="visual-match-row clickable" data-document-id="' + escapeHtml(m.document_id) + '">' +
         '<div class="visual-match-rank">' + (i + 1) + '</div>' +
         '<div class="visual-match-body">' +
           '<div class="visual-match-head">' +
@@ -156,8 +156,13 @@
           '</div>' +
           '<div class="visual-match-meta">' + escapeHtml(snippet) + '</div>' +
         '</div>' +
-      '</div>';
+      '</button>';
     }).join("");
+    out.querySelectorAll("[data-document-id]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        if (window.DocDetail) window.DocDetail.open(el.dataset.documentId);
+      });
+    });
   }
 
   // --- Review: generate -------------------------------------------------

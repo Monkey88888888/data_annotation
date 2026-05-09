@@ -56,6 +56,10 @@ class DemoRequestHandler(BaseHTTPRequestHandler):
             if segments == ["api", "image", "snapshot"]:
                 self.send_json(image_workflow.snapshot(state, _safe_supabase_client()))
                 return
+
+            if len(segments) == 3 and segments[:2] == ["api", "document"]:
+                self.send_json(_get_document(segments[2]))
+                return
             if len(segments) == 4 and segments[:2] == ["api", "projects"] and segments[3] == "quality":
                 self.send_json(demo_poc.quality_metrics(state, segments[2]))
                 return
@@ -181,6 +185,22 @@ class DemoRequestHandler(BaseHTTPRequestHandler):
                     "project": project,
                     "snapshot": image_workflow.snapshot(state, _safe_supabase_client()),
                 })
+                return
+
+            if len(segments) == 4 and segments[:2] == ["api", "document"] and segments[3] == "reannotate":
+                self.send_json(_reannotate_document(segments[2]))
+                return
+
+            if len(segments) == 4 and segments[:2] == ["api", "document"] and segments[3] == "edit":
+                self.send_json(_edit_document(segments[2], payload.get("facets") or {}))
+                return
+
+            if segments == ["api", "text", "save"]:
+                self.send_json(_save_text_document(payload))
+                return
+
+            if segments == ["api", "image", "save"]:
+                self.send_json(_save_image_document(payload))
                 return
 
             if segments == ["api", "text", "annotate"]:
@@ -457,6 +477,129 @@ def _safe_supabase_client() -> Any | None:
     except Exception:
         _supabase_client_cache = None
     return _supabase_client_cache
+
+
+_EDITABLE_FACETS = frozenset({
+    "auth_domain", "auth_author", "auth_institution",
+    "type_text", "type_image", "type_timeseries",
+    "modality_b2b_email", "modality_landing_page",
+    "modality_fmri_t1", "modality_fmri_bold",
+    "strict_regulatory", "strict_technicality",
+    "tone_formality", "tone_aggressiveness", "tone_creativity",
+})
+
+
+def _require_supabase() -> Any:
+    client = _safe_supabase_client()
+    if client is None:
+        raise RuntimeError("supabase client unavailable -- check SUPABASE_URL / SUPABASE_SERVICE_KEY")
+    return client
+
+
+def _get_document(doc_id: str) -> dict[str, Any]:
+    client = _require_supabase()
+    rows = client.fetch_by_ids([doc_id])
+    row = rows.get(doc_id)
+    if not row:
+        raise ValueError(f"document {doc_id} not found")
+    return {"document": row}
+
+
+def _refresh_document(client: Any, doc_id: str) -> dict[str, Any]:
+    rows = client.fetch_by_ids([doc_id])
+    return rows.get(doc_id) or {}
+
+
+def _parse_data_url(value: str) -> tuple[str, str]:
+    """data:image/png;base64,iVBORw... -> ('image/png', 'iVBORw...')"""
+    if not value.startswith("data:"):
+        raise ValueError("payload is not a data URL; cannot re-annotate image")
+    header, _, body = value[5:].partition(",")
+    media_type, _, encoding = header.partition(";")
+    if encoding != "base64":
+        raise ValueError("data URL must be base64-encoded")
+    return media_type or "image/png", body
+
+
+def _reannotate_document(doc_id: str) -> dict[str, Any]:
+    client = _require_supabase()
+    rows = client.fetch_by_ids([doc_id])
+    row = rows.get(doc_id)
+    if not row:
+        raise ValueError(f"document {doc_id} not found")
+    archetype_id = row.get("archetype_id")
+    payload = row.get("content_payload") or ""
+
+    if archetype_id == "text_document":
+        result = annotate_text(payload)
+    elif archetype_id == "image_asset":
+        media_type, b64 = _parse_data_url(payload)
+        data = base64.b64decode(b64)
+        result = annotate_image(data, media_type=media_type)
+    else:
+        raise ValueError(f"no annotator for archetype {archetype_id!r}")
+
+    facets = result.facets
+    client._client.table("documents_raw").update(facets).eq("id", doc_id).execute()
+    client.upsert_annotation(result.to_db_row(document_id=doc_id))
+    return {
+        "document": _refresh_document(client, doc_id),
+        "annotation": result.to_db_row(document_id=doc_id),
+    }
+
+
+def _edit_document(doc_id: str, facets: dict[str, Any]) -> dict[str, Any]:
+    client = _require_supabase()
+    update = {k: v for k, v in facets.items() if k in _EDITABLE_FACETS}
+    if not update:
+        raise ValueError("no recognised facet columns in payload")
+    client._client.table("documents_raw").update(update).eq("id", doc_id).execute()
+    return {"document": _refresh_document(client, doc_id)}
+
+
+def _save_text_document(payload: dict[str, Any]) -> dict[str, Any]:
+    """Insert a text row into documents_raw with the supplied facets +
+    text payload. The annotator runner / indexer will then pick it up
+    on the next pass (or you can call /reannotate immediately)."""
+    client = _require_supabase()
+    text = str(payload.get("content_payload") or "").strip()
+    if not text:
+        raise ValueError("content_payload is required")
+    facets = payload.get("facets") or {}
+    row: dict[str, Any] = {
+        "source_name": str(payload.get("source_name") or "ui-text-save")[:255],
+        "content_payload": text,
+        "archetype_id": "text_document",
+        "is_processed": True if facets else False,
+    }
+    for key, value in facets.items():
+        if key in _EDITABLE_FACETS:
+            row[key] = value
+    inserted = client._client.table("documents_raw").insert(row).execute()
+    return {"document": inserted.data[0]}
+
+
+def _save_image_document(payload: dict[str, Any]) -> dict[str, Any]:
+    """Insert an image row with a data URL in content_payload so the
+    detail view can render the image after retrieval."""
+    client = _require_supabase()
+    image_b64 = str(payload.get("image_base64") or "")
+    media_type = str(payload.get("media_type") or "image/png")
+    if not image_b64:
+        raise ValueError("image_base64 is required")
+    data_url = f"data:{media_type};base64,{image_b64}"
+    facets = payload.get("facets") or {}
+    row: dict[str, Any] = {
+        "source_name": str(payload.get("source_name") or "ui-image-save")[:255],
+        "content_payload": data_url,
+        "archetype_id": "image_asset",
+        "is_processed": True if facets else False,
+    }
+    for key, value in facets.items():
+        if key in _EDITABLE_FACETS:
+            row[key] = value
+    inserted = client._client.table("documents_raw").insert(row).execute()
+    return {"document": inserted.data[0]}
 
 
 def _facet_weights_from_payload(payload: dict[str, Any]) -> dict[str, float]:
