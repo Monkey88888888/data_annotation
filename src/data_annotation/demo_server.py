@@ -12,6 +12,7 @@ from typing import Any
 from urllib.parse import parse_qs, unquote, urlparse
 
 from data_annotation import demo_poc
+from data_annotation.annotator.text import annotate_text
 
 
 WEB_ROOT = Path(__file__).resolve().parent / "web"
@@ -149,6 +150,14 @@ class DemoRequestHandler(BaseHTTPRequestHandler):
                 )
                 demo_poc.save_state(state, self.state_path)
                 self.send_json({"retrieval": run, "snapshot": demo_poc.app_snapshot(state)})
+                return
+
+            if segments == ["api", "text", "annotate"]:
+                text = str(payload.get("text") or "").strip()
+                if not text:
+                    raise ValueError("text is required")
+                result = annotate_text(text, client=HeuristicTextClient())
+                self.send_json({"annotation": result.to_db_row(), "text_length": len(text)})
                 return
 
             self.send_error(404)
@@ -321,6 +330,56 @@ def normalize_pixels(values: list[float]) -> list[int]:
     if high == low:
         return [0 for _ in values]
     return [max(0, min(255, round(((value - low) / (high - low)) * 255))) for value in values]
+
+
+class HeuristicTextClient:
+    """Local deterministic demo client that satisfies the text annotator protocol."""
+
+    def call_with_tool(
+        self,
+        *,
+        model: str,
+        system: str,
+        tool: dict[str, Any],
+        content: list[dict[str, Any]],
+        max_tokens: int,
+    ) -> dict[str, Any]:
+        text = " ".join(str(block.get("text", "")) for block in content if block.get("type") == "text")
+        return heuristic_text_facets(text)
+
+
+def heuristic_text_facets(text: str) -> dict[str, Any]:
+    lower = text.lower()
+    word_count = max(1, len(text.split()))
+    regulatory_hits = count_hits(lower, ("compliance", "policy", "legal", "regulatory", "privacy", "terms", "audit"))
+    technical_hits = count_hits(lower, ("api", "dataset", "model", "vector", "schema", "latency", "pipeline", "architecture"))
+    aggressive_hits = count_hits(lower, ("now", "urgent", "limited", "must", "immediately", "guarantee", "unlock"))
+    creative_hits = count_hits(lower, ("imagine", "story", "beautiful", "transform", "spark", "craft", "delight"))
+    formal_hits = count_hits(lower, ("therefore", "regarding", "pursuant", "sincerely", "enterprise", "stakeholder"))
+
+    is_email = any(token in lower for token in ("hi ", "hello", "dear ", "sincerely", "book a call", "reply"))
+    is_landing = any(token in lower for token in ("start", "sign up", "features", "pricing", "hero", "cta", "landing"))
+    if is_email and is_landing:
+        is_landing = lower.count("sign up") + lower.count("features") >= lower.count("reply") + lower.count("call")
+
+    return {
+        "type_text": True,
+        "modality_b2b_email": bool(is_email and not is_landing),
+        "modality_landing_page": bool(is_landing),
+        "strict_regulatory": clamp01((regulatory_hits * 0.18) + (0.08 if word_count > 120 else 0.0)),
+        "strict_technicality": clamp01((technical_hits * 0.16) + (0.05 if word_count > 80 else 0.0)),
+        "tone_formality": clamp01(0.28 + formal_hits * 0.12 + regulatory_hits * 0.06),
+        "tone_aggressiveness": clamp01(0.18 + aggressive_hits * 0.15),
+        "tone_creativity": clamp01(0.16 + creative_hits * 0.16),
+    }
+
+
+def count_hits(text: str, terms: tuple[str, ...]) -> int:
+    return sum(text.count(term) for term in terms)
+
+
+def clamp01(value: float) -> float:
+    return round(max(0.0, min(1.0, value)), 3)
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:

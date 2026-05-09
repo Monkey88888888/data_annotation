@@ -7,7 +7,40 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <div class="app-shell">
+    <section id="modeLanding" class="mode-landing">
+      <div class="landing-topline">
+        <div class="brand compact">
+          <div class="brand-mark">HD</div>
+          <div>
+            <strong>FacetLab</strong>
+            <span>annotation workspaces</span>
+          </div>
+        </div>
+        <span class="runtime-chip live">Local demo active</span>
+      </div>
+      <div class="landing-copy">
+        <span class="eyebrow">Choose Workflow</span>
+        <h1>Start with the data type you need to qualify.</h1>
+        <p>
+          fMRI and text assets use different rubrics, evidence views, and terminal routes.
+          Pick a workspace to keep the annotation flow focused.
+        </p>
+      </div>
+      <div class="mode-grid">
+        <button class="mode-card fmri-card" data-mode="fmri" type="button">
+          <span class="mode-kicker">Medical imaging</span>
+          <strong>fMRI / BIDS Qualification</strong>
+          <em>Inspect OpenNeuro assets, NIfTI evidence, review queues, and faceted retrieval.</em>
+        </button>
+        <button class="mode-card text-card" data-mode="text" type="button">
+          <span class="mode-kicker">Documents & copy</span>
+          <strong>Text Facet Annotator</strong>
+          <em>Paste business text and generate structured modality, strictness, and tone facets.</em>
+        </button>
+      </div>
+    </section>
+
+    <div id="fmriApp" class="app-shell hidden">
       <nav class="utility-rail" aria-label="Application tools">
         <div class="rail-logo">F</div>
         <span class="rail-icon active" title="Workspace">▦</span>
@@ -17,13 +50,14 @@
         <span class="rail-icon bottom" title="Status">?</span>
       </nav>
       <aside class="sidebar">
-        <div class="brand">
-          <div class="brand-mark">HD</div>
-          <div>
-            <strong>FacetLab fMRI</strong>
-            <span>annotation console</span>
+          <div class="brand">
+            <div class="brand-mark">HD</div>
+            <div>
+              <strong>FacetLab fMRI</strong>
+              <span>annotation console</span>
+            </div>
           </div>
-        </div>
+        <button class="mode-switch secondary full-width" data-mode="landing" type="button">All workflows</button>
         <nav id="projectList" class="project-list" aria-label="Projects"></nav>
         <nav class="workflow-nav" aria-label="Workflow pages">
           <button class="workflow-tab active" data-page="setup" type="button">
@@ -92,6 +126,60 @@
             <section class="panel" id="exportPanel"></section>
           </section>
         </div>
+      </main>
+    </div>
+
+    <div id="textApp" class="text-app hidden">
+      <header class="text-topbar">
+        <button class="secondary" data-mode="landing" type="button">All workflows</button>
+        <div>
+          <strong>Platform Alpha | Text Annotation Workflow</strong>
+          <span>Facet extraction for B2B email, landing pages, strictness, and tone</span>
+        </div>
+        <span class="runtime-chip live">text_document</span>
+      </header>
+
+      <main class="text-workspace">
+        <section class="panel text-input-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Text Asset</span>
+              <h2>Paste source text</h2>
+            </div>
+          </div>
+          <textarea id="textPayload" class="text-payload" spellcheck="true">Hi Jordan, your analytics team can cut manual reporting time by connecting pipeline metrics, model evaluation, and compliance-ready exports in one workspace. Want to see a 15 minute demo this week?</textarea>
+          <div class="text-samples">
+            <button class="secondary" data-sample="email" type="button">B2B email</button>
+            <button class="secondary" data-sample="landing" type="button">Landing page</button>
+            <button class="secondary" data-sample="policy" type="button">Policy text</button>
+          </div>
+          <div class="actions">
+            <button id="runTextAnnotator" type="button">Annotate text</button>
+          </div>
+        </section>
+
+        <section class="panel text-result-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Facets</span>
+              <h2>Annotation result</h2>
+            </div>
+            <span id="textHashBadge" class="status-pill">not run</span>
+          </div>
+          <div id="textFacetResults" class="text-facet-results">
+            <div class="empty">Run the text annotator to generate facet scores.</div>
+          </div>
+        </section>
+
+        <section class="panel text-json-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Payload</span>
+              <h2>Database row preview</h2>
+            </div>
+          </div>
+          <div class="export-box large"><code id="textJsonOutput">{}</code></div>
+        </section>
       </main>
     </div>
 

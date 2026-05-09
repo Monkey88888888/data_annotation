@@ -1,6 +1,7 @@
 let snapshot = null;
 let lastExport = null;
 let activePageName = "setup";
+let activeMode = "landing";
 
 document.addEventListener("DOMContentLoaded", async () => {
   bindStaticActions();
@@ -8,6 +9,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function bindStaticActions() {
+  document.querySelectorAll("[data-mode]").forEach((button) => {
+    button.addEventListener("click", () => {
+      setActiveMode(button.dataset.mode);
+    });
+  });
+
+  document.querySelectorAll("[data-sample]").forEach((button) => {
+    button.addEventListener("click", () => {
+      document.getElementById("textPayload").value = textSample(button.dataset.sample);
+    });
+  });
+
+  document.getElementById("runTextAnnotator").addEventListener("click", annotateTextPayload);
+
   document.querySelectorAll("[data-page]").forEach((button) => {
     button.addEventListener("click", () => {
       setActivePage(button.dataset.page);
@@ -34,6 +49,17 @@ function bindStaticActions() {
   });
 }
 
+function setActiveMode(modeName) {
+  activeMode = modeName;
+  document.getElementById("modeLanding").classList.toggle("hidden", activeMode !== "landing");
+  document.getElementById("fmriApp").classList.toggle("hidden", activeMode !== "fmri");
+  document.getElementById("textApp").classList.toggle("hidden", activeMode !== "text");
+  if (activeMode === "fmri") {
+    drawScan(snapshot?.current_assignment || snapshot?.review_assignment);
+    renderAssetPreview(snapshot?.current_assignment || snapshot?.review_assignment);
+  }
+}
+
 function setActivePage(pageName) {
   activePageName = pageName;
   document.querySelectorAll("[data-page]").forEach((button) => {
@@ -48,6 +74,7 @@ function setActivePage(pageName) {
 async function loadState() {
   snapshot = await api("/api/state");
   render();
+  setActiveMode(activeMode);
 }
 
 async function api(path, options = {}) {
@@ -79,6 +106,82 @@ function render() {
   drawScan(snapshot.current_assignment || snapshot.review_assignment);
   renderAssetPreview(snapshot.current_assignment || snapshot.review_assignment);
   bindDynamicActions();
+}
+
+async function annotateTextPayload() {
+  const button = document.getElementById("runTextAnnotator");
+  const text = document.getElementById("textPayload").value.trim();
+  if (!text) return;
+  button.disabled = true;
+  button.textContent = "Annotating";
+  try {
+    const response = await api("/api/text/annotate", {
+      method: "POST",
+      body: { text },
+    });
+    renderTextAnnotation(response.annotation, response.text_length);
+  } finally {
+    button.disabled = false;
+    button.textContent = "Annotate text";
+  }
+}
+
+function renderTextAnnotation(row, textLength) {
+  const facets = row.facets || {};
+  document.getElementById("textHashBadge").textContent = `${row.asset_hash.slice(0, 8)}...`;
+  document.getElementById("textFacetResults").innerHTML = `
+    <div class="text-summary-grid">
+      ${detail("Archetype", row.archetype_id)}
+      ${detail("Kind", row.annotator_kind)}
+      ${detail("Model", row.model)}
+      ${detail("Characters", textLength)}
+    </div>
+    <div class="facet-section">
+      <h3>Modality</h3>
+      <div class="facet-chips">
+        ${facetChip("Text", facets.type_text)}
+        ${facetChip("B2B email", facets.modality_b2b_email)}
+        ${facetChip("Landing page", facets.modality_landing_page)}
+      </div>
+    </div>
+    <div class="facet-section">
+      <h3>Strictness</h3>
+      ${facetBar("Regulatory", facets.strict_regulatory)}
+      ${facetBar("Technicality", facets.strict_technicality)}
+    </div>
+    <div class="facet-section">
+      <h3>Tone</h3>
+      ${facetBar("Formality", facets.tone_formality)}
+      ${facetBar("Aggressiveness", facets.tone_aggressiveness)}
+      ${facetBar("Creativity", facets.tone_creativity)}
+    </div>
+  `;
+  document.getElementById("textJsonOutput").textContent = JSON.stringify(row, null, 2);
+}
+
+function facetChip(label, active) {
+  return `<span class="facet-chip ${active ? "active" : ""}">${escapeHtml(label)}: ${active ? "true" : "false"}</span>`;
+}
+
+function facetBar(label, value) {
+  const number = Number(value || 0);
+  const width = Math.round(Math.max(0, Math.min(1, number)) * 100);
+  return `<div class="facet-bar-row">
+    <div class="facet-bar-label"><span>${escapeHtml(label)}</span><strong>${numberText(number)}</strong></div>
+    <div class="bar"><span style="width:${width}%"></span></div>
+  </div>`;
+}
+
+function textSample(name) {
+  const samples = {
+    email:
+      "Hi Jordan, your analytics team can cut manual reporting time by connecting pipeline metrics, model evaluation, and compliance-ready exports in one workspace. Want to see a 15 minute demo this week?",
+    landing:
+      "Turn raw customer feedback into trusted product decisions. Start your workspace, route high-impact comments to reviewers, and export clean insights for every stakeholder. Sign up to explore features and pricing.",
+    policy:
+      "All model outputs must comply with privacy, retention, and audit requirements. Teams are required to document policy exceptions, regulatory risk, and review status before publishing external responses.",
+  };
+  return samples[name] || samples.email;
 }
 
 function activeView() {
