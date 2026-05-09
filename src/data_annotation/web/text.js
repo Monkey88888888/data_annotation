@@ -9,8 +9,55 @@
     bindProposal();
     bindSearch();
     bindGenerate();
+    bindQuality();
     refreshSnapshot();
   });
+
+  function bindQuality() {
+    const button = document.getElementById("refreshTextQuality");
+    if (!button) return;
+    button.addEventListener("click", refreshQuality);
+  }
+
+  async function refreshQuality() {
+    const button = document.getElementById("refreshTextQuality");
+    const out = document.getElementById("textQualityPanel");
+    button.disabled = true;
+    button.textContent = "Loading";
+    out.innerHTML = '<div class="empty">Loading...</div>';
+    try {
+      const data = await fetchJson("/api/text/quality");
+      renderQuality(data, out);
+    } catch (err) {
+      out.innerHTML = '<div class="empty error">' + escapeHtml(err.message) + '</div>';
+    } finally {
+      button.disabled = false;
+      button.textContent = "Refresh";
+    }
+  }
+
+  function renderQuality(data, out) {
+    if (!data || data.available === false) {
+      out.innerHTML = '<div class="empty">' + escapeHtml(data && data.error || "Quality unavailable") + '</div>';
+      return;
+    }
+    const averages = data.facet_averages || {};
+    const avgRows = Object.keys(averages).map(function (key) {
+      return '<div class="quality-row"><span>' + escapeHtml(key) + '</span><strong>' + averages[key].toFixed(2) + '</strong></div>';
+    }).join("");
+    out.innerHTML =
+      '<div class="quality-summary">' +
+        '<div class="quality-stat"><span>total</span><strong>' + data.total + '</strong></div>' +
+        '<div class="quality-stat"><span>processed</span><strong>' + data.processed + '</strong></div>' +
+        '<div class="quality-stat"><span>indexed</span><strong>' + data.indexed + '</strong></div>' +
+      '</div>' +
+      '<div class="quality-modality">' +
+        '<span class="eyebrow">Modality counts</span>' +
+        '<div class="quality-row"><span>b2b_email</span><strong>' + (data.modality && data.modality.b2b_email || 0) + '</strong></div>' +
+        '<div class="quality-row"><span>landing_page</span><strong>' + (data.modality && data.modality.landing_page || 0) + '</strong></div>' +
+      '</div>' +
+      '<div class="quality-averages"><span class="eyebrow">Facet averages</span>' + avgRows + '</div>';
+  }
 
   // --- page nav ---------------------------------------------------------
 

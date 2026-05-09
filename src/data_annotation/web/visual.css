@@ -5,12 +5,85 @@
  * styles.css and are reused unchanged here.
  */
 
-.visual-app {
-  display: flex;
-  flex-direction: column;
+/* Sidebar layout for text + visual workspaces. Mirrors fMRI's
+ * sidebar-on-left structure but without the utility-rail icon column. */
+
+.visual-app,
+.text-app {
+  display: grid;
+  grid-template-columns: minmax(260px, 300px) 1fr;
   min-height: 100vh;
   background: #0d1117;
   color: #f7f9fc;
+}
+
+.visual-app.hidden,
+.text-app.hidden {
+  display: none;
+}
+
+.workspace-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 18px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  min-height: 100vh;
+}
+
+.workspace-sidebar .brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.workspace-sidebar .brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, rgba(120, 192, 255, 0.24), rgba(120, 192, 255, 0.04));
+  border: 1px solid rgba(120, 192, 255, 0.34);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: #d6ecff;
+}
+
+.workspace-sidebar .brand strong {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.workspace-sidebar .brand span {
+  display: block;
+  font-size: 11px;
+  color: rgba(247, 249, 252, 0.55);
+  margin-top: 2px;
+}
+
+.workspace-sidebar .mode-switch {
+  width: 100%;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+}
+
+.workspace-sidebar .workflow-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.workspace-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
 }
 
 .visual-topbar {
@@ -515,5 +588,84 @@
   }
   .facet-edit-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Quality panel */
+
+.quality-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.quality-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.quality-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.quality-stat span {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(247, 249, 252, 0.55);
+}
+
+.quality-stat strong {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.quality-modality,
+.quality-averages {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quality-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  font-size: 12.5px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.quality-row span {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color: rgba(247, 249, 252, 0.7);
+}
+
+.quality-row strong {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mobile fallback for sidebar layout */
+
+@media (max-width: 880px) {
+  .visual-app,
+  .text-app {
+    grid-template-columns: 1fr;
+  }
+  .workspace-sidebar {
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .workspace-sidebar .workflow-nav {
+    flex-direction: row;
+    overflow-x: auto;
   }
 }

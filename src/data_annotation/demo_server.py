@@ -60,6 +60,22 @@ class DemoRequestHandler(BaseHTTPRequestHandler):
             if len(segments) == 3 and segments[:2] == ["api", "document"]:
                 self.send_json(_get_document(segments[2]))
                 return
+
+            if segments == ["api", "text", "quality"]:
+                self.send_json(text_workflow.quality_metrics(_safe_supabase_client(), "text_document"))
+                return
+            if segments == ["api", "image", "quality"]:
+                self.send_json(text_workflow.quality_metrics(_safe_supabase_client(), "image_asset"))
+                return
+
+            if segments == ["api", "text", "export"]:
+                self._send_jsonl(text_workflow.export_jsonl(_safe_supabase_client(), "text_document"),
+                                 filename="text_documents.jsonl")
+                return
+            if segments == ["api", "image", "export"]:
+                self._send_jsonl(text_workflow.export_jsonl(_safe_supabase_client(), "image_asset"),
+                                 filename="image_documents.jsonl")
+                return
             if len(segments) == 4 and segments[:2] == ["api", "projects"] and segments[3] == "quality":
                 self.send_json(demo_poc.quality_metrics(state, segments[2]))
                 return
@@ -256,6 +272,15 @@ class DemoRequestHandler(BaseHTTPRequestHandler):
             return {}
         raw = self.rfile.read(length).decode("utf-8")
         return json.loads(raw) if raw else {}
+
+    def _send_jsonl(self, body_text: str, *, filename: str) -> None:
+        body = body_text.encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/x-ndjson")
+        self.send_header("Content-Disposition", f'attachment; filename="{filename}"')
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
 
     def send_json(self, payload: dict[str, Any] | list[Any], status: int = 200) -> None:
         body = json.dumps(payload, indent=2, sort_keys=True).encode("utf-8")

@@ -133,6 +133,63 @@ def _recent_documents(client: Any, archetype_id: str, *, limit: int = 10) -> lis
     return [_compact_document(row) for row in (result.data or [])]
 
 
+def quality_metrics(client: Any, archetype_id: str) -> dict[str, Any]:
+    """Counts + facet histograms for a given archetype, pulled from
+    documents_raw. Used by both text and image workspaces."""
+    if client is None:
+        return {"archetype_id": archetype_id, "available": False}
+    try:
+        rows = (
+            client._client.table("documents_raw")
+            .select("is_processed,is_indexed,modality_b2b_email,modality_landing_page,strict_regulatory,strict_technicality,tone_formality,tone_aggressiveness,tone_creativity")
+            .eq("archetype_id", archetype_id)
+            .execute()
+        ).data or []
+    except Exception as exc:
+        return {"archetype_id": archetype_id, "available": False, "error": str(exc)}
+
+    total = len(rows)
+    processed = sum(1 for r in rows if r.get("is_processed"))
+    indexed = sum(1 for r in rows if r.get("is_indexed"))
+    modality = {
+        "b2b_email": sum(1 for r in rows if r.get("modality_b2b_email")),
+        "landing_page": sum(1 for r in rows if r.get("modality_landing_page")),
+    }
+    averages: dict[str, float] = {}
+    for key in ("strict_regulatory", "strict_technicality",
+                "tone_formality", "tone_aggressiveness", "tone_creativity"):
+        values = [float(r.get(key) or 0.0) for r in rows]
+        averages[key] = round(sum(values) / len(values), 4) if values else 0.0
+    return {
+        "archetype_id": archetype_id,
+        "available": True,
+        "total": total,
+        "processed": processed,
+        "indexed": indexed,
+        "modality": modality,
+        "facet_averages": averages,
+    }
+
+
+def export_jsonl(client: Any, archetype_id: str, *, limit: int = 10000) -> str:
+    """Stream the documents_raw rows for an archetype as JSONL string."""
+    import json as _json
+    if client is None:
+        return ""
+    try:
+        result = (
+            client._client.table("documents_raw")
+            .select("*")
+            .eq("archetype_id", archetype_id)
+            .order("created_at", desc=True)
+            .limit(limit)
+            .execute()
+        )
+    except Exception:
+        return ""
+    return "\n".join(_json.dumps(row, sort_keys=True, default=str) for row in (result.data or []))
+
+
 def _compact_document(row: dict[str, Any]) -> dict[str, Any]:
     payload = row.get("content_payload") or ""
     return {
