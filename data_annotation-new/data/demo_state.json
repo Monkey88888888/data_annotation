@@ -1,0 +1,2757 @@
+{
+  "activity": [
+    {
+      "created_at": "2026-05-09T00:03:02Z",
+      "detail": "Loaded OpenNeuro ds000001 fMRI assets, authority checks, pre-labels, and annotation queue.",
+      "id": "act_fd2af26804",
+      "project_id": "proj_fmri_openneuro",
+      "title": "Demo project seeded"
+    }
+  ],
+  "agent_actions": {
+    "agent_fmri_seed": {
+      "action_type": "seed_task_spec",
+      "approved_by": "demo-operator",
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "agent_fmri_seed",
+      "input_json": {
+        "request_text": "Qualify OpenNeuro fMRI BIDS assets for trusted retrieval. Validate NIfTI payload evidence, sidecar metadata, authority, and route questionable scans to reviewer adjudication."
+      },
+      "output_json": {
+        "assumptions": [
+          "OpenNeuro accession, DOI, license, and BIDS path are authority evidence.",
+          "Downloaded NIfTI headers and sidecars increase trust but are not required for metadata-only triage.",
+          "Low confidence, AI-human disagreement, and gold mismatches require reviewer adjudication."
+        ],
+        "task_spec_id": "spec_fmri_bids_qualification"
+      },
+      "project_id": "proj_fmri_openneuro",
+      "status": "approved"
+    }
+  },
+  "annotations": {},
+  "assignments": {
+    "asg_08107f26d886": {
+      "assignee_id": null,
+      "assignee_type": "human",
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "asg_08107f26d886",
+      "item_id": "item_08107f26d886",
+      "prelabel_confidence": 0.92,
+      "prelabel_json": {
+        "authority_tier": "verified_payload",
+        "issue_flags": [],
+        "payload_status": "present_valid",
+        "qualification_status": "trusted",
+        "retrieval_ready": true
+      },
+      "prelabel_rationale": "Authority score 1.00; source, BIDS path, sidecar, and local NIfTI evidence all pass.",
+      "priority": 10,
+      "project_id": "proj_fmri_openneuro",
+      "review_reasons": [],
+      "state": "pending",
+      "task_spec_id": "spec_fmri_bids_qualification",
+      "updated_at": "2026-05-09T00:03:02Z"
+    },
+    "asg_27f29f04e16c": {
+      "assignee_id": null,
+      "assignee_type": "human",
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "asg_27f29f04e16c",
+      "item_id": "item_27f29f04e16c",
+      "prelabel_confidence": 0.78,
+      "prelabel_json": {
+        "authority_tier": "strong_metadata",
+        "issue_flags": [
+          "missing_payload",
+          "invalid_nifti_header"
+        ],
+        "payload_status": "metadata_only",
+        "qualification_status": "needs_payload",
+        "retrieval_ready": true
+      },
+      "prelabel_rationale": "Authority score 0.79; review focuses on missing_payload, invalid_nifti_header.",
+      "priority": 3,
+      "project_id": "proj_fmri_openneuro",
+      "review_reasons": [],
+      "state": "pending",
+      "task_spec_id": "spec_fmri_bids_qualification",
+      "updated_at": "2026-05-09T00:03:02Z"
+    },
+    "asg_36094c32ace5": {
+      "assignee_id": null,
+      "assignee_type": "human",
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "asg_36094c32ace5",
+      "item_id": "item_36094c32ace5",
+      "prelabel_confidence": 0.78,
+      "prelabel_json": {
+        "authority_tier": "strong_metadata",
+        "issue_flags": [
+          "missing_payload",
+          "invalid_nifti_header"
+        ],
+        "payload_status": "metadata_only",
+        "qualification_status": "needs_payload",
+        "retrieval_ready": true
+      },
+      "prelabel_rationale": "Authority score 0.79; review focuses on missing_payload, invalid_nifti_header.",
+      "priority": 1,
+      "project_id": "proj_fmri_openneuro",
+      "review_reasons": [],
+      "state": "pending",
+      "task_spec_id": "spec_fmri_bids_qualification",
+      "updated_at": "2026-05-09T00:03:02Z"
+    },
+    "asg_6897a2dcd81f": {
+      "assignee_id": null,
+      "assignee_type": "human",
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "asg_6897a2dcd81f",
+      "item_id": "item_6897a2dcd81f",
+      "prelabel_confidence": 0.78,
+      "prelabel_json": {
+        "authority_tier": "strong_metadata",
+        "issue_flags": [
+          "missing_payload",
+          "invalid_nifti_header"
+        ],
+        "payload_status": "metadata_only",
+        "qualification_status": "needs_payload",
+        "retrieval_ready": true
+      },
+      "prelabel_rationale": "Authority score 0.79; review focuses on missing_payload, invalid_nifti_header.",
+      "priority": 6,
+      "project_id": "proj_fmri_openneuro",
+      "review_reasons": [],
+      "state": "pending",
+      "task_spec_id": "spec_fmri_bids_qualification",
+      "updated_at": "2026-05-09T00:03:02Z"
+    },
+    "asg_b0ae549aa92b": {
+      "assignee_id": null,
+      "assignee_type": "human",
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "asg_b0ae549aa92b",
+      "item_id": "item_b0ae549aa92b",
+      "prelabel_confidence": 0.78,
+      "prelabel_json": {
+        "authority_tier": "strong_metadata",
+        "issue_flags": [
+          "missing_payload",
+          "invalid_nifti_header"
+        ],
+        "payload_status": "metadata_only",
+        "qualification_status": "needs_payload",
+        "retrieval_ready": true
+      },
+      "prelabel_rationale": "Authority score 0.79; review focuses on missing_payload, invalid_nifti_header.",
+      "priority": 4,
+      "project_id": "proj_fmri_openneuro",
+      "review_reasons": [],
+      "state": "pending",
+      "task_spec_id": "spec_fmri_bids_qualification",
+      "updated_at": "2026-05-09T00:03:02Z"
+    },
+    "asg_b160a793c152": {
+      "assignee_id": null,
+      "assignee_type": "human",
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "asg_b160a793c152",
+      "item_id": "item_b160a793c152",
+      "prelabel_confidence": 0.78,
+      "prelabel_json": {
+        "authority_tier": "strong_metadata",
+        "issue_flags": [
+          "missing_payload",
+          "invalid_nifti_header"
+        ],
+        "payload_status": "metadata_only",
+        "qualification_status": "needs_payload",
+        "retrieval_ready": true
+      },
+      "prelabel_rationale": "Authority score 0.79; review focuses on missing_payload, invalid_nifti_header.",
+      "priority": 7,
+      "project_id": "proj_fmri_openneuro",
+      "review_reasons": [],
+      "state": "pending",
+      "task_spec_id": "spec_fmri_bids_qualification",
+      "updated_at": "2026-05-09T00:03:02Z"
+    },
+    "asg_c93f02512877": {
+      "assignee_id": null,
+      "assignee_type": "human",
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "asg_c93f02512877",
+      "item_id": "item_c93f02512877",
+      "prelabel_confidence": 0.78,
+      "prelabel_json": {
+        "authority_tier": "strong_metadata",
+        "issue_flags": [
+          "missing_payload",
+          "invalid_nifti_header"
+        ],
+        "payload_status": "metadata_only",
+        "qualification_status": "needs_payload",
+        "retrieval_ready": true
+      },
+      "prelabel_rationale": "Authority score 0.79; review focuses on missing_payload, invalid_nifti_header.",
+      "priority": 2,
+      "project_id": "proj_fmri_openneuro",
+      "review_reasons": [],
+      "state": "pending",
+      "task_spec_id": "spec_fmri_bids_qualification",
+      "updated_at": "2026-05-09T00:03:02Z"
+    },
+    "asg_e866c587d134": {
+      "assignee_id": null,
+      "assignee_type": "human",
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "asg_e866c587d134",
+      "item_id": "item_e866c587d134",
+      "prelabel_confidence": 0.78,
+      "prelabel_json": {
+        "authority_tier": "strong_metadata",
+        "issue_flags": [
+          "missing_payload",
+          "invalid_nifti_header"
+        ],
+        "payload_status": "metadata_only",
+        "qualification_status": "needs_payload",
+        "retrieval_ready": true
+      },
+      "prelabel_rationale": "Authority score 0.79; review focuses on missing_payload, invalid_nifti_header.",
+      "priority": 5,
+      "project_id": "proj_fmri_openneuro",
+      "review_reasons": [],
+      "state": "pending",
+      "task_spec_id": "spec_fmri_bids_qualification",
+      "updated_at": "2026-05-09T00:03:02Z"
+    }
+  },
+  "dataset_items": {
+    "item_08107f26d886": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "gold_label_json": {
+        "authority_tier": "verified_payload",
+        "issue_flags": [],
+        "payload_status": "present_valid",
+        "qualification_status": "trusted",
+        "retrieval_ready": true
+      },
+      "id": "item_08107f26d886",
+      "metadata_json": {
+        "asset_id": "08107f26d886c5b0ee7f35d8a565931d197599ac58a1066b0dad3c3fb65e0003",
+        "authority_score": 1.0,
+        "dataset_id": "ds000001",
+        "local_payload_present": true,
+        "repetition_time": 2.0,
+        "run": "01",
+        "sidecar_present": true,
+        "subject": "sub-16",
+        "suffix": "bold",
+        "task": "balloonanalogrisktask",
+        "valid_nifti_header": true
+      },
+      "payload_json": {
+        "asset": {
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 1.0,
+          "dataset_id": "ds000001",
+          "path": "sub-16/func/sub-16_task-balloonanalogrisktask_run-01_bold.nii.gz",
+          "size_mb": 0.0,
+          "source": "OpenNeuro"
+        },
+        "authority_checks": {
+          "annexed_payload": true,
+          "bids_func_path": true,
+          "dataset_accession": true,
+          "dataset_doi": true,
+          "local_payload_present": true,
+          "nifti_header_valid": true,
+          "nifti_is_4d": true,
+          "nifti_payload": true,
+          "nonzero_size": true,
+          "open_license": true,
+          "openneuro_source": true,
+          "repetition_time_present": true,
+          "sidecar_json_present": true,
+          "versioned_snapshot": true
+        },
+        "authority_vector_preview": [
+          -1.0,
+          -1.0,
+          1.0,
+          1.0,
+          1.0,
+          -1.0,
+          -1.0,
+          1.0
+        ],
+        "faceted_matrix": {
+          "authority": {
+            "magnitude": 1.0,
+            "preview": [
+              -1.0,
+              -1.0,
+              1.0,
+              1.0,
+              1.0,
+              -1.0,
+              -1.0,
+              1.0
+            ],
+            "seed": "authority:08107f26d886c5b0ee7f35d8a565931d197599ac58a1066b0dad3c3fb65e0003:fmri_openneuro_bids_metadata_v0:1.0",
+            "source": "asset_authority_score"
+          },
+          "modality": {
+            "preview": [
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              1
+            ],
+            "seed": "modality:fmri-nifti-bids",
+            "value": "fMRI_NIfTI_BIDS"
+          },
+          "strictness": {
+            "preview": [
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1
+            ],
+            "seed": "strictness:high-ground-truth",
+            "value": "high"
+          },
+          "tone": {
+            "preview": [
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "tone:clinical-research-neutral",
+            "value": "neutral"
+          },
+          "type": {
+            "preview": [
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "type:medical-imaging-timeseries",
+            "value": "medical_imaging_timeseries"
+          }
+        },
+        "ingested_record": {
+          "archetype_id": "fmri_scan",
+          "asset_id": "08107f26d886c5b0ee7f35d8a565931d197599ac58a1066b0dad3c3fb65e0003",
+          "authority_checks": {
+            "annexed_payload": true,
+            "bids_func_path": true,
+            "dataset_accession": true,
+            "dataset_doi": true,
+            "local_payload_present": true,
+            "nifti_header_valid": true,
+            "nifti_is_4d": true,
+            "nifti_payload": true,
+            "nonzero_size": true,
+            "open_license": true,
+            "openneuro_source": true,
+            "repetition_time_present": true,
+            "sidecar_json_present": true,
+            "versioned_snapshot": true
+          },
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 1.0,
+          "authority_vector_magnitude": 1.0,
+          "authority_vector_preview": [
+            -1.0,
+            -1.0,
+            1.0,
+            1.0,
+            1.0,
+            -1.0,
+            -1.0,
+            1.0
+          ],
+          "authority_vector_seed": "authority:08107f26d886c5b0ee7f35d8a565931d197599ac58a1066b0dad3c3fb65e0003:fmri_openneuro_bids_metadata_v0:1.0",
+          "dataset_id": "ds000001",
+          "dimension": 10000,
+          "faceted_matrix": {
+            "authority": {
+              "magnitude": 1.0,
+              "preview": [
+                -1.0,
+                -1.0,
+                1.0,
+                1.0,
+                1.0,
+                -1.0,
+                -1.0,
+                1.0
+              ],
+              "seed": "authority:08107f26d886c5b0ee7f35d8a565931d197599ac58a1066b0dad3c3fb65e0003:fmri_openneuro_bids_metadata_v0:1.0",
+              "source": "asset_authority_score"
+            },
+            "modality": {
+              "preview": [
+                -1,
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                1
+              ],
+              "seed": "modality:fmri-nifti-bids",
+              "value": "fMRI_NIfTI_BIDS"
+            },
+            "strictness": {
+              "preview": [
+                1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                -1
+              ],
+              "seed": "strictness:high-ground-truth",
+              "value": "high"
+            },
+            "tone": {
+              "preview": [
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "tone:clinical-research-neutral",
+              "value": "neutral"
+            },
+            "type": {
+              "preview": [
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "type:medical-imaging-timeseries",
+              "value": "medical_imaging_timeseries"
+            }
+          },
+          "local_evidence": {
+            "nifti_header": {
+              "datatype": 4,
+              "dimensions": [
+                4,
+                64,
+                64,
+                34,
+                300,
+                0,
+                0,
+                0
+              ],
+              "magic": "n+1",
+              "pixdim": [
+                -1.0,
+                3.125,
+                3.125,
+                4.0,
+                2.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "sizeof_hdr": 348,
+              "valid": true,
+              "vox_offset": 352.0
+            },
+            "payload_path": "data/openneuro/ds000001/sub-16/func/sub-16_task-balloonanalogrisktask_run-01_bold.nii.gz",
+            "payload_present": true,
+            "sidecar_json": {
+              "RepetitionTime": 2.0,
+              "TaskName": "balloon analog risk task"
+            },
+            "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+            "sidecar_present": true
+          },
+          "path": "sub-16/func/sub-16_task-balloonanalogrisktask_run-01_bold.nii.gz",
+          "raw_hypervector_preview": [
+            1,
+            -1,
+            -1,
+            1,
+            1,
+            -1,
+            1,
+            1
+          ],
+          "raw_hypervector_seed": "raw:08107f26d886c5b0ee7f35d8a565931d197599ac58a1066b0dad3c3fb65e0003",
+          "source": "OpenNeuro"
+        },
+        "local_evidence": {
+          "nifti_header": {
+            "datatype": 4,
+            "dimensions": [
+              4,
+              64,
+              64,
+              34,
+              300,
+              0,
+              0,
+              0
+            ],
+            "magic": "n+1",
+            "pixdim": [
+              -1.0,
+              3.125,
+              3.125,
+              4.0,
+              2.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "sizeof_hdr": 348,
+            "valid": true,
+            "vox_offset": 352.0
+          },
+          "payload_path": "data/openneuro/ds000001/sub-16/func/sub-16_task-balloonanalogrisktask_run-01_bold.nii.gz",
+          "payload_present": true,
+          "sidecar_json": {
+            "RepetitionTime": 2.0,
+            "TaskName": "balloon analog risk task"
+          },
+          "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+          "sidecar_present": true
+        },
+        "raw_hypervector_preview": [
+          1,
+          -1,
+          -1,
+          1,
+          1,
+          -1,
+          1,
+          1
+        ]
+      },
+      "project_id": "proj_fmri_openneuro",
+      "source_uri": "openneuro://ds000001/sub-16/func/sub-16_task-balloonanalogrisktask_run-01_bold.nii.gz",
+      "split": "gold"
+    },
+    "item_27f29f04e16c": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "gold_label_json": null,
+      "id": "item_27f29f04e16c",
+      "metadata_json": {
+        "asset_id": "27f29f04e16cf100e3c3f0d5205a65811800a889ba1fe12295c091321ed365e2",
+        "authority_score": 0.785714,
+        "dataset_id": "ds000001",
+        "local_payload_present": false,
+        "repetition_time": 2.0,
+        "run": "03",
+        "sidecar_present": true,
+        "subject": "sub-15",
+        "suffix": "bold",
+        "task": "balloonanalogrisktask",
+        "valid_nifti_header": false
+      },
+      "payload_json": {
+        "asset": {
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "dataset_id": "ds000001",
+          "path": "sub-15/func/sub-15_task-balloonanalogrisktask_run-03_bold.nii.gz",
+          "size_mb": 0.0,
+          "source": "OpenNeuro"
+        },
+        "authority_checks": {
+          "annexed_payload": true,
+          "bids_func_path": true,
+          "dataset_accession": true,
+          "dataset_doi": true,
+          "local_payload_present": false,
+          "nifti_header_valid": false,
+          "nifti_is_4d": false,
+          "nifti_payload": true,
+          "nonzero_size": true,
+          "open_license": true,
+          "openneuro_source": true,
+          "repetition_time_present": true,
+          "sidecar_json_present": true,
+          "versioned_snapshot": true
+        },
+        "authority_vector_preview": [
+          0.785714,
+          -0.785714,
+          0.785714,
+          -0.785714,
+          -0.785714,
+          0.785714,
+          0.785714,
+          0.785714
+        ],
+        "faceted_matrix": {
+          "authority": {
+            "magnitude": 0.785714,
+            "preview": [
+              0.785714,
+              -0.785714,
+              0.785714,
+              -0.785714,
+              -0.785714,
+              0.785714,
+              0.785714,
+              0.785714
+            ],
+            "seed": "authority:27f29f04e16cf100e3c3f0d5205a65811800a889ba1fe12295c091321ed365e2:fmri_openneuro_bids_metadata_v0:0.785714",
+            "source": "asset_authority_score"
+          },
+          "modality": {
+            "preview": [
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              1
+            ],
+            "seed": "modality:fmri-nifti-bids",
+            "value": "fMRI_NIfTI_BIDS"
+          },
+          "strictness": {
+            "preview": [
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1
+            ],
+            "seed": "strictness:high-ground-truth",
+            "value": "high"
+          },
+          "tone": {
+            "preview": [
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "tone:clinical-research-neutral",
+            "value": "neutral"
+          },
+          "type": {
+            "preview": [
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "type:medical-imaging-timeseries",
+            "value": "medical_imaging_timeseries"
+          }
+        },
+        "ingested_record": {
+          "archetype_id": "fmri_scan",
+          "asset_id": "27f29f04e16cf100e3c3f0d5205a65811800a889ba1fe12295c091321ed365e2",
+          "authority_checks": {
+            "annexed_payload": true,
+            "bids_func_path": true,
+            "dataset_accession": true,
+            "dataset_doi": true,
+            "local_payload_present": false,
+            "nifti_header_valid": false,
+            "nifti_is_4d": false,
+            "nifti_payload": true,
+            "nonzero_size": true,
+            "open_license": true,
+            "openneuro_source": true,
+            "repetition_time_present": true,
+            "sidecar_json_present": true,
+            "versioned_snapshot": true
+          },
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "authority_vector_magnitude": 0.785714,
+          "authority_vector_preview": [
+            0.785714,
+            -0.785714,
+            0.785714,
+            -0.785714,
+            -0.785714,
+            0.785714,
+            0.785714,
+            0.785714
+          ],
+          "authority_vector_seed": "authority:27f29f04e16cf100e3c3f0d5205a65811800a889ba1fe12295c091321ed365e2:fmri_openneuro_bids_metadata_v0:0.785714",
+          "dataset_id": "ds000001",
+          "dimension": 10000,
+          "faceted_matrix": {
+            "authority": {
+              "magnitude": 0.785714,
+              "preview": [
+                0.785714,
+                -0.785714,
+                0.785714,
+                -0.785714,
+                -0.785714,
+                0.785714,
+                0.785714,
+                0.785714
+              ],
+              "seed": "authority:27f29f04e16cf100e3c3f0d5205a65811800a889ba1fe12295c091321ed365e2:fmri_openneuro_bids_metadata_v0:0.785714",
+              "source": "asset_authority_score"
+            },
+            "modality": {
+              "preview": [
+                -1,
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                1
+              ],
+              "seed": "modality:fmri-nifti-bids",
+              "value": "fMRI_NIfTI_BIDS"
+            },
+            "strictness": {
+              "preview": [
+                1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                -1
+              ],
+              "seed": "strictness:high-ground-truth",
+              "value": "high"
+            },
+            "tone": {
+              "preview": [
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "tone:clinical-research-neutral",
+              "value": "neutral"
+            },
+            "type": {
+              "preview": [
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "type:medical-imaging-timeseries",
+              "value": "medical_imaging_timeseries"
+            }
+          },
+          "local_evidence": {
+            "nifti_header": {},
+            "payload_path": "data/openneuro/ds000001/sub-15/func/sub-15_task-balloonanalogrisktask_run-03_bold.nii.gz",
+            "payload_present": false,
+            "sidecar_json": {
+              "RepetitionTime": 2.0,
+              "TaskName": "balloon analog risk task"
+            },
+            "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+            "sidecar_present": true
+          },
+          "path": "sub-15/func/sub-15_task-balloonanalogrisktask_run-03_bold.nii.gz",
+          "raw_hypervector_preview": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            1,
+            1,
+            -1
+          ],
+          "raw_hypervector_seed": "raw:27f29f04e16cf100e3c3f0d5205a65811800a889ba1fe12295c091321ed365e2",
+          "source": "OpenNeuro"
+        },
+        "local_evidence": {
+          "nifti_header": {},
+          "payload_path": "data/openneuro/ds000001/sub-15/func/sub-15_task-balloonanalogrisktask_run-03_bold.nii.gz",
+          "payload_present": false,
+          "sidecar_json": {
+            "RepetitionTime": 2.0,
+            "TaskName": "balloon analog risk task"
+          },
+          "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+          "sidecar_present": true
+        },
+        "raw_hypervector_preview": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          1,
+          1,
+          -1
+        ]
+      },
+      "project_id": "proj_fmri_openneuro",
+      "source_uri": "openneuro://ds000001/sub-15/func/sub-15_task-balloonanalogrisktask_run-03_bold.nii.gz",
+      "split": "demo"
+    },
+    "item_36094c32ace5": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "gold_label_json": null,
+      "id": "item_36094c32ace5",
+      "metadata_json": {
+        "asset_id": "36094c32ace5f26fd7c3a220d158da328111c5e8ecec2ec9f90abc472866c095",
+        "authority_score": 0.785714,
+        "dataset_id": "ds000001",
+        "local_payload_present": false,
+        "repetition_time": 2.0,
+        "run": "02",
+        "sidecar_present": true,
+        "subject": "sub-14",
+        "suffix": "bold",
+        "task": "balloonanalogrisktask",
+        "valid_nifti_header": false
+      },
+      "payload_json": {
+        "asset": {
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "dataset_id": "ds000001",
+          "path": "sub-14/func/sub-14_task-balloonanalogrisktask_run-02_bold.nii.gz",
+          "size_mb": 0.0,
+          "source": "OpenNeuro"
+        },
+        "authority_checks": {
+          "annexed_payload": true,
+          "bids_func_path": true,
+          "dataset_accession": true,
+          "dataset_doi": true,
+          "local_payload_present": false,
+          "nifti_header_valid": false,
+          "nifti_is_4d": false,
+          "nifti_payload": true,
+          "nonzero_size": true,
+          "open_license": true,
+          "openneuro_source": true,
+          "repetition_time_present": true,
+          "sidecar_json_present": true,
+          "versioned_snapshot": true
+        },
+        "authority_vector_preview": [
+          -0.785714,
+          0.785714,
+          0.785714,
+          0.785714,
+          0.785714,
+          -0.785714,
+          -0.785714,
+          -0.785714
+        ],
+        "faceted_matrix": {
+          "authority": {
+            "magnitude": 0.785714,
+            "preview": [
+              -0.785714,
+              0.785714,
+              0.785714,
+              0.785714,
+              0.785714,
+              -0.785714,
+              -0.785714,
+              -0.785714
+            ],
+            "seed": "authority:36094c32ace5f26fd7c3a220d158da328111c5e8ecec2ec9f90abc472866c095:fmri_openneuro_bids_metadata_v0:0.785714",
+            "source": "asset_authority_score"
+          },
+          "modality": {
+            "preview": [
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              1
+            ],
+            "seed": "modality:fmri-nifti-bids",
+            "value": "fMRI_NIfTI_BIDS"
+          },
+          "strictness": {
+            "preview": [
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1
+            ],
+            "seed": "strictness:high-ground-truth",
+            "value": "high"
+          },
+          "tone": {
+            "preview": [
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "tone:clinical-research-neutral",
+            "value": "neutral"
+          },
+          "type": {
+            "preview": [
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "type:medical-imaging-timeseries",
+            "value": "medical_imaging_timeseries"
+          }
+        },
+        "ingested_record": {
+          "archetype_id": "fmri_scan",
+          "asset_id": "36094c32ace5f26fd7c3a220d158da328111c5e8ecec2ec9f90abc472866c095",
+          "authority_checks": {
+            "annexed_payload": true,
+            "bids_func_path": true,
+            "dataset_accession": true,
+            "dataset_doi": true,
+            "local_payload_present": false,
+            "nifti_header_valid": false,
+            "nifti_is_4d": false,
+            "nifti_payload": true,
+            "nonzero_size": true,
+            "open_license": true,
+            "openneuro_source": true,
+            "repetition_time_present": true,
+            "sidecar_json_present": true,
+            "versioned_snapshot": true
+          },
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "authority_vector_magnitude": 0.785714,
+          "authority_vector_preview": [
+            -0.785714,
+            0.785714,
+            0.785714,
+            0.785714,
+            0.785714,
+            -0.785714,
+            -0.785714,
+            -0.785714
+          ],
+          "authority_vector_seed": "authority:36094c32ace5f26fd7c3a220d158da328111c5e8ecec2ec9f90abc472866c095:fmri_openneuro_bids_metadata_v0:0.785714",
+          "dataset_id": "ds000001",
+          "dimension": 10000,
+          "faceted_matrix": {
+            "authority": {
+              "magnitude": 0.785714,
+              "preview": [
+                -0.785714,
+                0.785714,
+                0.785714,
+                0.785714,
+                0.785714,
+                -0.785714,
+                -0.785714,
+                -0.785714
+              ],
+              "seed": "authority:36094c32ace5f26fd7c3a220d158da328111c5e8ecec2ec9f90abc472866c095:fmri_openneuro_bids_metadata_v0:0.785714",
+              "source": "asset_authority_score"
+            },
+            "modality": {
+              "preview": [
+                -1,
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                1
+              ],
+              "seed": "modality:fmri-nifti-bids",
+              "value": "fMRI_NIfTI_BIDS"
+            },
+            "strictness": {
+              "preview": [
+                1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                -1
+              ],
+              "seed": "strictness:high-ground-truth",
+              "value": "high"
+            },
+            "tone": {
+              "preview": [
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "tone:clinical-research-neutral",
+              "value": "neutral"
+            },
+            "type": {
+              "preview": [
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "type:medical-imaging-timeseries",
+              "value": "medical_imaging_timeseries"
+            }
+          },
+          "local_evidence": {
+            "nifti_header": {},
+            "payload_path": "data/openneuro/ds000001/sub-14/func/sub-14_task-balloonanalogrisktask_run-02_bold.nii.gz",
+            "payload_present": false,
+            "sidecar_json": {
+              "RepetitionTime": 2.0,
+              "TaskName": "balloon analog risk task"
+            },
+            "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+            "sidecar_present": true
+          },
+          "path": "sub-14/func/sub-14_task-balloonanalogrisktask_run-02_bold.nii.gz",
+          "raw_hypervector_preview": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            1,
+            -1,
+            -1
+          ],
+          "raw_hypervector_seed": "raw:36094c32ace5f26fd7c3a220d158da328111c5e8ecec2ec9f90abc472866c095",
+          "source": "OpenNeuro"
+        },
+        "local_evidence": {
+          "nifti_header": {},
+          "payload_path": "data/openneuro/ds000001/sub-14/func/sub-14_task-balloonanalogrisktask_run-02_bold.nii.gz",
+          "payload_present": false,
+          "sidecar_json": {
+            "RepetitionTime": 2.0,
+            "TaskName": "balloon analog risk task"
+          },
+          "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+          "sidecar_present": true
+        },
+        "raw_hypervector_preview": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          1,
+          -1,
+          -1
+        ]
+      },
+      "project_id": "proj_fmri_openneuro",
+      "source_uri": "openneuro://ds000001/sub-14/func/sub-14_task-balloonanalogrisktask_run-02_bold.nii.gz",
+      "split": "demo"
+    },
+    "item_6897a2dcd81f": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "gold_label_json": null,
+      "id": "item_6897a2dcd81f",
+      "metadata_json": {
+        "asset_id": "6897a2dcd81f64f52faf33e7af2ec22e90b2433ab9d0e38bbea7392b3edb9f22",
+        "authority_score": 0.785714,
+        "dataset_id": "ds000001",
+        "local_payload_present": false,
+        "repetition_time": 2.0,
+        "run": "03",
+        "sidecar_present": true,
+        "subject": "sub-16",
+        "suffix": "bold",
+        "task": "balloonanalogrisktask",
+        "valid_nifti_header": false
+      },
+      "payload_json": {
+        "asset": {
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "dataset_id": "ds000001",
+          "path": "sub-16/func/sub-16_task-balloonanalogrisktask_run-03_bold.nii.gz",
+          "size_mb": 0.0,
+          "source": "OpenNeuro"
+        },
+        "authority_checks": {
+          "annexed_payload": true,
+          "bids_func_path": true,
+          "dataset_accession": true,
+          "dataset_doi": true,
+          "local_payload_present": false,
+          "nifti_header_valid": false,
+          "nifti_is_4d": false,
+          "nifti_payload": true,
+          "nonzero_size": true,
+          "open_license": true,
+          "openneuro_source": true,
+          "repetition_time_present": true,
+          "sidecar_json_present": true,
+          "versioned_snapshot": true
+        },
+        "authority_vector_preview": [
+          -0.785714,
+          0.785714,
+          0.785714,
+          -0.785714,
+          -0.785714,
+          0.785714,
+          -0.785714,
+          0.785714
+        ],
+        "faceted_matrix": {
+          "authority": {
+            "magnitude": 0.785714,
+            "preview": [
+              -0.785714,
+              0.785714,
+              0.785714,
+              -0.785714,
+              -0.785714,
+              0.785714,
+              -0.785714,
+              0.785714
+            ],
+            "seed": "authority:6897a2dcd81f64f52faf33e7af2ec22e90b2433ab9d0e38bbea7392b3edb9f22:fmri_openneuro_bids_metadata_v0:0.785714",
+            "source": "asset_authority_score"
+          },
+          "modality": {
+            "preview": [
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              1
+            ],
+            "seed": "modality:fmri-nifti-bids",
+            "value": "fMRI_NIfTI_BIDS"
+          },
+          "strictness": {
+            "preview": [
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1
+            ],
+            "seed": "strictness:high-ground-truth",
+            "value": "high"
+          },
+          "tone": {
+            "preview": [
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "tone:clinical-research-neutral",
+            "value": "neutral"
+          },
+          "type": {
+            "preview": [
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "type:medical-imaging-timeseries",
+            "value": "medical_imaging_timeseries"
+          }
+        },
+        "ingested_record": {
+          "archetype_id": "fmri_scan",
+          "asset_id": "6897a2dcd81f64f52faf33e7af2ec22e90b2433ab9d0e38bbea7392b3edb9f22",
+          "authority_checks": {
+            "annexed_payload": true,
+            "bids_func_path": true,
+            "dataset_accession": true,
+            "dataset_doi": true,
+            "local_payload_present": false,
+            "nifti_header_valid": false,
+            "nifti_is_4d": false,
+            "nifti_payload": true,
+            "nonzero_size": true,
+            "open_license": true,
+            "openneuro_source": true,
+            "repetition_time_present": true,
+            "sidecar_json_present": true,
+            "versioned_snapshot": true
+          },
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "authority_vector_magnitude": 0.785714,
+          "authority_vector_preview": [
+            -0.785714,
+            0.785714,
+            0.785714,
+            -0.785714,
+            -0.785714,
+            0.785714,
+            -0.785714,
+            0.785714
+          ],
+          "authority_vector_seed": "authority:6897a2dcd81f64f52faf33e7af2ec22e90b2433ab9d0e38bbea7392b3edb9f22:fmri_openneuro_bids_metadata_v0:0.785714",
+          "dataset_id": "ds000001",
+          "dimension": 10000,
+          "faceted_matrix": {
+            "authority": {
+              "magnitude": 0.785714,
+              "preview": [
+                -0.785714,
+                0.785714,
+                0.785714,
+                -0.785714,
+                -0.785714,
+                0.785714,
+                -0.785714,
+                0.785714
+              ],
+              "seed": "authority:6897a2dcd81f64f52faf33e7af2ec22e90b2433ab9d0e38bbea7392b3edb9f22:fmri_openneuro_bids_metadata_v0:0.785714",
+              "source": "asset_authority_score"
+            },
+            "modality": {
+              "preview": [
+                -1,
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                1
+              ],
+              "seed": "modality:fmri-nifti-bids",
+              "value": "fMRI_NIfTI_BIDS"
+            },
+            "strictness": {
+              "preview": [
+                1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                -1
+              ],
+              "seed": "strictness:high-ground-truth",
+              "value": "high"
+            },
+            "tone": {
+              "preview": [
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "tone:clinical-research-neutral",
+              "value": "neutral"
+            },
+            "type": {
+              "preview": [
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "type:medical-imaging-timeseries",
+              "value": "medical_imaging_timeseries"
+            }
+          },
+          "local_evidence": {
+            "nifti_header": {},
+            "payload_path": "data/openneuro/ds000001/sub-16/func/sub-16_task-balloonanalogrisktask_run-03_bold.nii.gz",
+            "payload_present": false,
+            "sidecar_json": {
+              "RepetitionTime": 2.0,
+              "TaskName": "balloon analog risk task"
+            },
+            "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+            "sidecar_present": true
+          },
+          "path": "sub-16/func/sub-16_task-balloonanalogrisktask_run-03_bold.nii.gz",
+          "raw_hypervector_preview": [
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1
+          ],
+          "raw_hypervector_seed": "raw:6897a2dcd81f64f52faf33e7af2ec22e90b2433ab9d0e38bbea7392b3edb9f22",
+          "source": "OpenNeuro"
+        },
+        "local_evidence": {
+          "nifti_header": {},
+          "payload_path": "data/openneuro/ds000001/sub-16/func/sub-16_task-balloonanalogrisktask_run-03_bold.nii.gz",
+          "payload_present": false,
+          "sidecar_json": {
+            "RepetitionTime": 2.0,
+            "TaskName": "balloon analog risk task"
+          },
+          "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+          "sidecar_present": true
+        },
+        "raw_hypervector_preview": [
+          -1,
+          1,
+          -1,
+          1,
+          -1,
+          1,
+          -1,
+          1
+        ]
+      },
+      "project_id": "proj_fmri_openneuro",
+      "source_uri": "openneuro://ds000001/sub-16/func/sub-16_task-balloonanalogrisktask_run-03_bold.nii.gz",
+      "split": "demo"
+    },
+    "item_b0ae549aa92b": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "gold_label_json": null,
+      "id": "item_b0ae549aa92b",
+      "metadata_json": {
+        "asset_id": "b0ae549aa92b29fd8cfac52bb08c0fd0d59f172a3393463428e771af290ee35f",
+        "authority_score": 0.785714,
+        "dataset_id": "ds000001",
+        "local_payload_present": false,
+        "repetition_time": 2.0,
+        "run": "02",
+        "sidecar_present": true,
+        "subject": "sub-15",
+        "suffix": "bold",
+        "task": "balloonanalogrisktask",
+        "valid_nifti_header": false
+      },
+      "payload_json": {
+        "asset": {
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "dataset_id": "ds000001",
+          "path": "sub-15/func/sub-15_task-balloonanalogrisktask_run-02_bold.nii.gz",
+          "size_mb": 0.0,
+          "source": "OpenNeuro"
+        },
+        "authority_checks": {
+          "annexed_payload": true,
+          "bids_func_path": true,
+          "dataset_accession": true,
+          "dataset_doi": true,
+          "local_payload_present": false,
+          "nifti_header_valid": false,
+          "nifti_is_4d": false,
+          "nifti_payload": true,
+          "nonzero_size": true,
+          "open_license": true,
+          "openneuro_source": true,
+          "repetition_time_present": true,
+          "sidecar_json_present": true,
+          "versioned_snapshot": true
+        },
+        "authority_vector_preview": [
+          0.785714,
+          -0.785714,
+          -0.785714,
+          0.785714,
+          0.785714,
+          0.785714,
+          -0.785714,
+          0.785714
+        ],
+        "faceted_matrix": {
+          "authority": {
+            "magnitude": 0.785714,
+            "preview": [
+              0.785714,
+              -0.785714,
+              -0.785714,
+              0.785714,
+              0.785714,
+              0.785714,
+              -0.785714,
+              0.785714
+            ],
+            "seed": "authority:b0ae549aa92b29fd8cfac52bb08c0fd0d59f172a3393463428e771af290ee35f:fmri_openneuro_bids_metadata_v0:0.785714",
+            "source": "asset_authority_score"
+          },
+          "modality": {
+            "preview": [
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              1
+            ],
+            "seed": "modality:fmri-nifti-bids",
+            "value": "fMRI_NIfTI_BIDS"
+          },
+          "strictness": {
+            "preview": [
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1
+            ],
+            "seed": "strictness:high-ground-truth",
+            "value": "high"
+          },
+          "tone": {
+            "preview": [
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "tone:clinical-research-neutral",
+            "value": "neutral"
+          },
+          "type": {
+            "preview": [
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "type:medical-imaging-timeseries",
+            "value": "medical_imaging_timeseries"
+          }
+        },
+        "ingested_record": {
+          "archetype_id": "fmri_scan",
+          "asset_id": "b0ae549aa92b29fd8cfac52bb08c0fd0d59f172a3393463428e771af290ee35f",
+          "authority_checks": {
+            "annexed_payload": true,
+            "bids_func_path": true,
+            "dataset_accession": true,
+            "dataset_doi": true,
+            "local_payload_present": false,
+            "nifti_header_valid": false,
+            "nifti_is_4d": false,
+            "nifti_payload": true,
+            "nonzero_size": true,
+            "open_license": true,
+            "openneuro_source": true,
+            "repetition_time_present": true,
+            "sidecar_json_present": true,
+            "versioned_snapshot": true
+          },
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "authority_vector_magnitude": 0.785714,
+          "authority_vector_preview": [
+            0.785714,
+            -0.785714,
+            -0.785714,
+            0.785714,
+            0.785714,
+            0.785714,
+            -0.785714,
+            0.785714
+          ],
+          "authority_vector_seed": "authority:b0ae549aa92b29fd8cfac52bb08c0fd0d59f172a3393463428e771af290ee35f:fmri_openneuro_bids_metadata_v0:0.785714",
+          "dataset_id": "ds000001",
+          "dimension": 10000,
+          "faceted_matrix": {
+            "authority": {
+              "magnitude": 0.785714,
+              "preview": [
+                0.785714,
+                -0.785714,
+                -0.785714,
+                0.785714,
+                0.785714,
+                0.785714,
+                -0.785714,
+                0.785714
+              ],
+              "seed": "authority:b0ae549aa92b29fd8cfac52bb08c0fd0d59f172a3393463428e771af290ee35f:fmri_openneuro_bids_metadata_v0:0.785714",
+              "source": "asset_authority_score"
+            },
+            "modality": {
+              "preview": [
+                -1,
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                1
+              ],
+              "seed": "modality:fmri-nifti-bids",
+              "value": "fMRI_NIfTI_BIDS"
+            },
+            "strictness": {
+              "preview": [
+                1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                -1
+              ],
+              "seed": "strictness:high-ground-truth",
+              "value": "high"
+            },
+            "tone": {
+              "preview": [
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "tone:clinical-research-neutral",
+              "value": "neutral"
+            },
+            "type": {
+              "preview": [
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "type:medical-imaging-timeseries",
+              "value": "medical_imaging_timeseries"
+            }
+          },
+          "local_evidence": {
+            "nifti_header": {},
+            "payload_path": "data/openneuro/ds000001/sub-15/func/sub-15_task-balloonanalogrisktask_run-02_bold.nii.gz",
+            "payload_present": false,
+            "sidecar_json": {
+              "RepetitionTime": 2.0,
+              "TaskName": "balloon analog risk task"
+            },
+            "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+            "sidecar_present": true
+          },
+          "path": "sub-15/func/sub-15_task-balloonanalogrisktask_run-02_bold.nii.gz",
+          "raw_hypervector_preview": [
+            1,
+            1,
+            -1,
+            1,
+            1,
+            1,
+            -1,
+            -1
+          ],
+          "raw_hypervector_seed": "raw:b0ae549aa92b29fd8cfac52bb08c0fd0d59f172a3393463428e771af290ee35f",
+          "source": "OpenNeuro"
+        },
+        "local_evidence": {
+          "nifti_header": {},
+          "payload_path": "data/openneuro/ds000001/sub-15/func/sub-15_task-balloonanalogrisktask_run-02_bold.nii.gz",
+          "payload_present": false,
+          "sidecar_json": {
+            "RepetitionTime": 2.0,
+            "TaskName": "balloon analog risk task"
+          },
+          "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+          "sidecar_present": true
+        },
+        "raw_hypervector_preview": [
+          1,
+          1,
+          -1,
+          1,
+          1,
+          1,
+          -1,
+          -1
+        ]
+      },
+      "project_id": "proj_fmri_openneuro",
+      "source_uri": "openneuro://ds000001/sub-15/func/sub-15_task-balloonanalogrisktask_run-02_bold.nii.gz",
+      "split": "demo"
+    },
+    "item_b160a793c152": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "gold_label_json": null,
+      "id": "item_b160a793c152",
+      "metadata_json": {
+        "asset_id": "b160a793c1527c4a0144d078afa3bd8e3a12f44bd9a435b2557edd4ca14bdea8",
+        "authority_score": 0.785714,
+        "dataset_id": "ds000001",
+        "local_payload_present": false,
+        "repetition_time": 2.0,
+        "run": "02",
+        "sidecar_present": true,
+        "subject": "sub-16",
+        "suffix": "bold",
+        "task": "balloonanalogrisktask",
+        "valid_nifti_header": false
+      },
+      "payload_json": {
+        "asset": {
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "dataset_id": "ds000001",
+          "path": "sub-16/func/sub-16_task-balloonanalogrisktask_run-02_bold.nii.gz",
+          "size_mb": 0.0,
+          "source": "OpenNeuro"
+        },
+        "authority_checks": {
+          "annexed_payload": true,
+          "bids_func_path": true,
+          "dataset_accession": true,
+          "dataset_doi": true,
+          "local_payload_present": false,
+          "nifti_header_valid": false,
+          "nifti_is_4d": false,
+          "nifti_payload": true,
+          "nonzero_size": true,
+          "open_license": true,
+          "openneuro_source": true,
+          "repetition_time_present": true,
+          "sidecar_json_present": true,
+          "versioned_snapshot": true
+        },
+        "authority_vector_preview": [
+          -0.785714,
+          -0.785714,
+          -0.785714,
+          -0.785714,
+          -0.785714,
+          -0.785714,
+          -0.785714,
+          -0.785714
+        ],
+        "faceted_matrix": {
+          "authority": {
+            "magnitude": 0.785714,
+            "preview": [
+              -0.785714,
+              -0.785714,
+              -0.785714,
+              -0.785714,
+              -0.785714,
+              -0.785714,
+              -0.785714,
+              -0.785714
+            ],
+            "seed": "authority:b160a793c1527c4a0144d078afa3bd8e3a12f44bd9a435b2557edd4ca14bdea8:fmri_openneuro_bids_metadata_v0:0.785714",
+            "source": "asset_authority_score"
+          },
+          "modality": {
+            "preview": [
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              1
+            ],
+            "seed": "modality:fmri-nifti-bids",
+            "value": "fMRI_NIfTI_BIDS"
+          },
+          "strictness": {
+            "preview": [
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1
+            ],
+            "seed": "strictness:high-ground-truth",
+            "value": "high"
+          },
+          "tone": {
+            "preview": [
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "tone:clinical-research-neutral",
+            "value": "neutral"
+          },
+          "type": {
+            "preview": [
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "type:medical-imaging-timeseries",
+            "value": "medical_imaging_timeseries"
+          }
+        },
+        "ingested_record": {
+          "archetype_id": "fmri_scan",
+          "asset_id": "b160a793c1527c4a0144d078afa3bd8e3a12f44bd9a435b2557edd4ca14bdea8",
+          "authority_checks": {
+            "annexed_payload": true,
+            "bids_func_path": true,
+            "dataset_accession": true,
+            "dataset_doi": true,
+            "local_payload_present": false,
+            "nifti_header_valid": false,
+            "nifti_is_4d": false,
+            "nifti_payload": true,
+            "nonzero_size": true,
+            "open_license": true,
+            "openneuro_source": true,
+            "repetition_time_present": true,
+            "sidecar_json_present": true,
+            "versioned_snapshot": true
+          },
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "authority_vector_magnitude": 0.785714,
+          "authority_vector_preview": [
+            -0.785714,
+            -0.785714,
+            -0.785714,
+            -0.785714,
+            -0.785714,
+            -0.785714,
+            -0.785714,
+            -0.785714
+          ],
+          "authority_vector_seed": "authority:b160a793c1527c4a0144d078afa3bd8e3a12f44bd9a435b2557edd4ca14bdea8:fmri_openneuro_bids_metadata_v0:0.785714",
+          "dataset_id": "ds000001",
+          "dimension": 10000,
+          "faceted_matrix": {
+            "authority": {
+              "magnitude": 0.785714,
+              "preview": [
+                -0.785714,
+                -0.785714,
+                -0.785714,
+                -0.785714,
+                -0.785714,
+                -0.785714,
+                -0.785714,
+                -0.785714
+              ],
+              "seed": "authority:b160a793c1527c4a0144d078afa3bd8e3a12f44bd9a435b2557edd4ca14bdea8:fmri_openneuro_bids_metadata_v0:0.785714",
+              "source": "asset_authority_score"
+            },
+            "modality": {
+              "preview": [
+                -1,
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                1
+              ],
+              "seed": "modality:fmri-nifti-bids",
+              "value": "fMRI_NIfTI_BIDS"
+            },
+            "strictness": {
+              "preview": [
+                1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                -1
+              ],
+              "seed": "strictness:high-ground-truth",
+              "value": "high"
+            },
+            "tone": {
+              "preview": [
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "tone:clinical-research-neutral",
+              "value": "neutral"
+            },
+            "type": {
+              "preview": [
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "type:medical-imaging-timeseries",
+              "value": "medical_imaging_timeseries"
+            }
+          },
+          "local_evidence": {
+            "nifti_header": {},
+            "payload_path": "data/openneuro/ds000001/sub-16/func/sub-16_task-balloonanalogrisktask_run-02_bold.nii.gz",
+            "payload_present": false,
+            "sidecar_json": {
+              "RepetitionTime": 2.0,
+              "TaskName": "balloon analog risk task"
+            },
+            "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+            "sidecar_present": true
+          },
+          "path": "sub-16/func/sub-16_task-balloonanalogrisktask_run-02_bold.nii.gz",
+          "raw_hypervector_preview": [
+            1,
+            -1,
+            1,
+            -1,
+            -1,
+            1,
+            -1,
+            -1
+          ],
+          "raw_hypervector_seed": "raw:b160a793c1527c4a0144d078afa3bd8e3a12f44bd9a435b2557edd4ca14bdea8",
+          "source": "OpenNeuro"
+        },
+        "local_evidence": {
+          "nifti_header": {},
+          "payload_path": "data/openneuro/ds000001/sub-16/func/sub-16_task-balloonanalogrisktask_run-02_bold.nii.gz",
+          "payload_present": false,
+          "sidecar_json": {
+            "RepetitionTime": 2.0,
+            "TaskName": "balloon analog risk task"
+          },
+          "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+          "sidecar_present": true
+        },
+        "raw_hypervector_preview": [
+          1,
+          -1,
+          1,
+          -1,
+          -1,
+          1,
+          -1,
+          -1
+        ]
+      },
+      "project_id": "proj_fmri_openneuro",
+      "source_uri": "openneuro://ds000001/sub-16/func/sub-16_task-balloonanalogrisktask_run-02_bold.nii.gz",
+      "split": "demo"
+    },
+    "item_c93f02512877": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "gold_label_json": null,
+      "id": "item_c93f02512877",
+      "metadata_json": {
+        "asset_id": "c93f0251287746ab2e6175dcb720eca9ec2070055588afbec163cc2a42ab133a",
+        "authority_score": 0.785714,
+        "dataset_id": "ds000001",
+        "local_payload_present": false,
+        "repetition_time": 2.0,
+        "run": "01",
+        "sidecar_present": true,
+        "subject": "sub-14",
+        "suffix": "bold",
+        "task": "balloonanalogrisktask",
+        "valid_nifti_header": false
+      },
+      "payload_json": {
+        "asset": {
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "dataset_id": "ds000001",
+          "path": "sub-14/func/sub-14_task-balloonanalogrisktask_run-01_bold.nii.gz",
+          "size_mb": 0.0,
+          "source": "OpenNeuro"
+        },
+        "authority_checks": {
+          "annexed_payload": true,
+          "bids_func_path": true,
+          "dataset_accession": true,
+          "dataset_doi": true,
+          "local_payload_present": false,
+          "nifti_header_valid": false,
+          "nifti_is_4d": false,
+          "nifti_payload": true,
+          "nonzero_size": true,
+          "open_license": true,
+          "openneuro_source": true,
+          "repetition_time_present": true,
+          "sidecar_json_present": true,
+          "versioned_snapshot": true
+        },
+        "authority_vector_preview": [
+          -0.785714,
+          -0.785714,
+          0.785714,
+          -0.785714,
+          -0.785714,
+          0.785714,
+          -0.785714,
+          -0.785714
+        ],
+        "faceted_matrix": {
+          "authority": {
+            "magnitude": 0.785714,
+            "preview": [
+              -0.785714,
+              -0.785714,
+              0.785714,
+              -0.785714,
+              -0.785714,
+              0.785714,
+              -0.785714,
+              -0.785714
+            ],
+            "seed": "authority:c93f0251287746ab2e6175dcb720eca9ec2070055588afbec163cc2a42ab133a:fmri_openneuro_bids_metadata_v0:0.785714",
+            "source": "asset_authority_score"
+          },
+          "modality": {
+            "preview": [
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              1
+            ],
+            "seed": "modality:fmri-nifti-bids",
+            "value": "fMRI_NIfTI_BIDS"
+          },
+          "strictness": {
+            "preview": [
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1
+            ],
+            "seed": "strictness:high-ground-truth",
+            "value": "high"
+          },
+          "tone": {
+            "preview": [
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "tone:clinical-research-neutral",
+            "value": "neutral"
+          },
+          "type": {
+            "preview": [
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "type:medical-imaging-timeseries",
+            "value": "medical_imaging_timeseries"
+          }
+        },
+        "ingested_record": {
+          "archetype_id": "fmri_scan",
+          "asset_id": "c93f0251287746ab2e6175dcb720eca9ec2070055588afbec163cc2a42ab133a",
+          "authority_checks": {
+            "annexed_payload": true,
+            "bids_func_path": true,
+            "dataset_accession": true,
+            "dataset_doi": true,
+            "local_payload_present": false,
+            "nifti_header_valid": false,
+            "nifti_is_4d": false,
+            "nifti_payload": true,
+            "nonzero_size": true,
+            "open_license": true,
+            "openneuro_source": true,
+            "repetition_time_present": true,
+            "sidecar_json_present": true,
+            "versioned_snapshot": true
+          },
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "authority_vector_magnitude": 0.785714,
+          "authority_vector_preview": [
+            -0.785714,
+            -0.785714,
+            0.785714,
+            -0.785714,
+            -0.785714,
+            0.785714,
+            -0.785714,
+            -0.785714
+          ],
+          "authority_vector_seed": "authority:c93f0251287746ab2e6175dcb720eca9ec2070055588afbec163cc2a42ab133a:fmri_openneuro_bids_metadata_v0:0.785714",
+          "dataset_id": "ds000001",
+          "dimension": 10000,
+          "faceted_matrix": {
+            "authority": {
+              "magnitude": 0.785714,
+              "preview": [
+                -0.785714,
+                -0.785714,
+                0.785714,
+                -0.785714,
+                -0.785714,
+                0.785714,
+                -0.785714,
+                -0.785714
+              ],
+              "seed": "authority:c93f0251287746ab2e6175dcb720eca9ec2070055588afbec163cc2a42ab133a:fmri_openneuro_bids_metadata_v0:0.785714",
+              "source": "asset_authority_score"
+            },
+            "modality": {
+              "preview": [
+                -1,
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                1
+              ],
+              "seed": "modality:fmri-nifti-bids",
+              "value": "fMRI_NIfTI_BIDS"
+            },
+            "strictness": {
+              "preview": [
+                1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                -1
+              ],
+              "seed": "strictness:high-ground-truth",
+              "value": "high"
+            },
+            "tone": {
+              "preview": [
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "tone:clinical-research-neutral",
+              "value": "neutral"
+            },
+            "type": {
+              "preview": [
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "type:medical-imaging-timeseries",
+              "value": "medical_imaging_timeseries"
+            }
+          },
+          "local_evidence": {
+            "nifti_header": {},
+            "payload_path": "data/openneuro/ds000001/sub-14/func/sub-14_task-balloonanalogrisktask_run-01_bold.nii.gz",
+            "payload_present": false,
+            "sidecar_json": {
+              "RepetitionTime": 2.0,
+              "TaskName": "balloon analog risk task"
+            },
+            "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+            "sidecar_present": true
+          },
+          "path": "sub-14/func/sub-14_task-balloonanalogrisktask_run-01_bold.nii.gz",
+          "raw_hypervector_preview": [
+            -1,
+            -1,
+            1,
+            1,
+            -1,
+            -1,
+            1,
+            -1
+          ],
+          "raw_hypervector_seed": "raw:c93f0251287746ab2e6175dcb720eca9ec2070055588afbec163cc2a42ab133a",
+          "source": "OpenNeuro"
+        },
+        "local_evidence": {
+          "nifti_header": {},
+          "payload_path": "data/openneuro/ds000001/sub-14/func/sub-14_task-balloonanalogrisktask_run-01_bold.nii.gz",
+          "payload_present": false,
+          "sidecar_json": {
+            "RepetitionTime": 2.0,
+            "TaskName": "balloon analog risk task"
+          },
+          "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+          "sidecar_present": true
+        },
+        "raw_hypervector_preview": [
+          -1,
+          -1,
+          1,
+          1,
+          -1,
+          -1,
+          1,
+          -1
+        ]
+      },
+      "project_id": "proj_fmri_openneuro",
+      "source_uri": "openneuro://ds000001/sub-14/func/sub-14_task-balloonanalogrisktask_run-01_bold.nii.gz",
+      "split": "demo"
+    },
+    "item_e866c587d134": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "gold_label_json": null,
+      "id": "item_e866c587d134",
+      "metadata_json": {
+        "asset_id": "e866c587d134f8e75f4474f1e49333a2a4102b966210aef9d1120a2f4a5f49ac",
+        "authority_score": 0.785714,
+        "dataset_id": "ds000001",
+        "local_payload_present": false,
+        "repetition_time": 2.0,
+        "run": "01",
+        "sidecar_present": true,
+        "subject": "sub-15",
+        "suffix": "bold",
+        "task": "balloonanalogrisktask",
+        "valid_nifti_header": false
+      },
+      "payload_json": {
+        "asset": {
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "dataset_id": "ds000001",
+          "path": "sub-15/func/sub-15_task-balloonanalogrisktask_run-01_bold.nii.gz",
+          "size_mb": 0.0,
+          "source": "OpenNeuro"
+        },
+        "authority_checks": {
+          "annexed_payload": true,
+          "bids_func_path": true,
+          "dataset_accession": true,
+          "dataset_doi": true,
+          "local_payload_present": false,
+          "nifti_header_valid": false,
+          "nifti_is_4d": false,
+          "nifti_payload": true,
+          "nonzero_size": true,
+          "open_license": true,
+          "openneuro_source": true,
+          "repetition_time_present": true,
+          "sidecar_json_present": true,
+          "versioned_snapshot": true
+        },
+        "authority_vector_preview": [
+          0.785714,
+          0.785714,
+          0.785714,
+          0.785714,
+          0.785714,
+          0.785714,
+          0.785714,
+          -0.785714
+        ],
+        "faceted_matrix": {
+          "authority": {
+            "magnitude": 0.785714,
+            "preview": [
+              0.785714,
+              0.785714,
+              0.785714,
+              0.785714,
+              0.785714,
+              0.785714,
+              0.785714,
+              -0.785714
+            ],
+            "seed": "authority:e866c587d134f8e75f4474f1e49333a2a4102b966210aef9d1120a2f4a5f49ac:fmri_openneuro_bids_metadata_v0:0.785714",
+            "source": "asset_authority_score"
+          },
+          "modality": {
+            "preview": [
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              1,
+              1
+            ],
+            "seed": "modality:fmri-nifti-bids",
+            "value": "fMRI_NIfTI_BIDS"
+          },
+          "strictness": {
+            "preview": [
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1
+            ],
+            "seed": "strictness:high-ground-truth",
+            "value": "high"
+          },
+          "tone": {
+            "preview": [
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "tone:clinical-research-neutral",
+            "value": "neutral"
+          },
+          "type": {
+            "preview": [
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1
+            ],
+            "seed": "type:medical-imaging-timeseries",
+            "value": "medical_imaging_timeseries"
+          }
+        },
+        "ingested_record": {
+          "archetype_id": "fmri_scan",
+          "asset_id": "e866c587d134f8e75f4474f1e49333a2a4102b966210aef9d1120a2f4a5f49ac",
+          "authority_checks": {
+            "annexed_payload": true,
+            "bids_func_path": true,
+            "dataset_accession": true,
+            "dataset_doi": true,
+            "local_payload_present": false,
+            "nifti_header_valid": false,
+            "nifti_is_4d": false,
+            "nifti_payload": true,
+            "nonzero_size": true,
+            "open_license": true,
+            "openneuro_source": true,
+            "repetition_time_present": true,
+            "sidecar_json_present": true,
+            "versioned_snapshot": true
+          },
+          "authority_rubric": "fmri_openneuro_bids_metadata_v0",
+          "authority_score": 0.785714,
+          "authority_vector_magnitude": 0.785714,
+          "authority_vector_preview": [
+            0.785714,
+            0.785714,
+            0.785714,
+            0.785714,
+            0.785714,
+            0.785714,
+            0.785714,
+            -0.785714
+          ],
+          "authority_vector_seed": "authority:e866c587d134f8e75f4474f1e49333a2a4102b966210aef9d1120a2f4a5f49ac:fmri_openneuro_bids_metadata_v0:0.785714",
+          "dataset_id": "ds000001",
+          "dimension": 10000,
+          "faceted_matrix": {
+            "authority": {
+              "magnitude": 0.785714,
+              "preview": [
+                0.785714,
+                0.785714,
+                0.785714,
+                0.785714,
+                0.785714,
+                0.785714,
+                0.785714,
+                -0.785714
+              ],
+              "seed": "authority:e866c587d134f8e75f4474f1e49333a2a4102b966210aef9d1120a2f4a5f49ac:fmri_openneuro_bids_metadata_v0:0.785714",
+              "source": "asset_authority_score"
+            },
+            "modality": {
+              "preview": [
+                -1,
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                1,
+                1
+              ],
+              "seed": "modality:fmri-nifti-bids",
+              "value": "fMRI_NIfTI_BIDS"
+            },
+            "strictness": {
+              "preview": [
+                1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                -1
+              ],
+              "seed": "strictness:high-ground-truth",
+              "value": "high"
+            },
+            "tone": {
+              "preview": [
+                -1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "tone:clinical-research-neutral",
+              "value": "neutral"
+            },
+            "type": {
+              "preview": [
+                1,
+                1,
+                1,
+                -1,
+                -1,
+                -1,
+                -1,
+                1
+              ],
+              "seed": "type:medical-imaging-timeseries",
+              "value": "medical_imaging_timeseries"
+            }
+          },
+          "local_evidence": {
+            "nifti_header": {},
+            "payload_path": "data/openneuro/ds000001/sub-15/func/sub-15_task-balloonanalogrisktask_run-01_bold.nii.gz",
+            "payload_present": false,
+            "sidecar_json": {
+              "RepetitionTime": 2.0,
+              "TaskName": "balloon analog risk task"
+            },
+            "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+            "sidecar_present": true
+          },
+          "path": "sub-15/func/sub-15_task-balloonanalogrisktask_run-01_bold.nii.gz",
+          "raw_hypervector_preview": [
+            -1,
+            -1,
+            -1,
+            -1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "raw_hypervector_seed": "raw:e866c587d134f8e75f4474f1e49333a2a4102b966210aef9d1120a2f4a5f49ac",
+          "source": "OpenNeuro"
+        },
+        "local_evidence": {
+          "nifti_header": {},
+          "payload_path": "data/openneuro/ds000001/sub-15/func/sub-15_task-balloonanalogrisktask_run-01_bold.nii.gz",
+          "payload_present": false,
+          "sidecar_json": {
+            "RepetitionTime": 2.0,
+            "TaskName": "balloon analog risk task"
+          },
+          "sidecar_path": "data/openneuro/ds000001/task-balloonanalogrisktask_bold.json",
+          "sidecar_present": true
+        },
+        "raw_hypervector_preview": [
+          -1,
+          -1,
+          -1,
+          -1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "project_id": "proj_fmri_openneuro",
+      "source_uri": "openneuro://ds000001/sub-15/func/sub-15_task-balloonanalogrisktask_run-01_bold.nii.gz",
+      "split": "demo"
+    }
+  },
+  "exports": [],
+  "meta": {
+    "active_project_id": "proj_fmri_openneuro",
+    "created_at": "2026-05-09T00:03:02Z",
+    "updated_at": "2026-05-09T00:03:02Z",
+    "version": "poc-0.1"
+  },
+  "projects": {
+    "proj_fmri_openneuro": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "id": "proj_fmri_openneuro",
+      "name": "OpenNeuro fMRI BIDS Qualification",
+      "objective": "Build a reviewer-qualified retrieval set for fMRI NIfTI assets.",
+      "owner_id": "demo-operator",
+      "request_text": "Qualify OpenNeuro fMRI BIDS assets for trusted retrieval. Validate NIfTI payload evidence, sidecar metadata, authority, and route questionable scans to reviewer adjudication.",
+      "status": "active",
+      "updated_at": "2026-05-09T00:03:02Z"
+    }
+  },
+  "retrieval_runs": [],
+  "reviews": {},
+  "task_specs": {
+    "spec_fmri_bids_qualification": {
+      "created_at": "2026-05-09T00:03:02Z",
+      "examples_json": [
+        {
+          "input": "OpenNeuro functional NIfTI with valid local header and task sidecar.",
+          "label_json": {
+            "authority_tier": "verified_payload",
+            "issue_flags": [],
+            "payload_status": "present_valid",
+            "qualification_status": "trusted",
+            "retrieval_ready": true
+          }
+        },
+        {
+          "input": "OpenNeuro functional NIfTI with DOI and sidecar, but payload not downloaded.",
+          "label_json": {
+            "authority_tier": "strong_metadata",
+            "issue_flags": [
+              "missing_payload",
+              "invalid_nifti_header"
+            ],
+            "payload_status": "metadata_only",
+            "qualification_status": "needs_payload",
+            "retrieval_ready": true
+          }
+        }
+      ],
+      "id": "spec_fmri_bids_qualification",
+      "primary_field": "qualification_status",
+      "project_id": "proj_fmri_openneuro",
+      "qa_thresholds_json": {
+        "max_review_backlog": 5,
+        "min_authority_score": 0.75,
+        "min_confidence": 0.72,
+        "target_ai_human_agreement": 0.82
+      },
+      "routing_policy_json": {
+        "ai_prelabel": true,
+        "gold_item_rate": 0.125,
+        "human_labels_per_item": 1,
+        "review_when": [
+          "ai_human_disagreement",
+          "confidence_below_0.72",
+          "gold_mismatch",
+          "missing_rationale"
+        ],
+        "reviewer_role": "neuroimaging_reviewer"
+      },
+      "rubric_md": "# fMRI BIDS qualification rubric\n\nTrusted: source metadata, BIDS path, NIfTI payload/header, and RepetitionTime are verified.\nNeeds payload: OpenNeuro/BIDS metadata is strong, but local payload or header evidence is absent.\nMetadata review: source is plausible but has missing authority or sidecar evidence.\nReject: core source, file type, BIDS path, license, or size evidence fails.",
+      "schema_json": {
+        "fields": [
+          {
+            "label": "Qualification",
+            "name": "qualification_status",
+            "options": [
+              {
+                "label": "Trusted",
+                "value": "trusted"
+              },
+              {
+                "label": "Needs payload",
+                "value": "needs_payload"
+              },
+              {
+                "label": "Metadata review",
+                "value": "metadata_review"
+              },
+              {
+                "label": "Reject",
+                "value": "reject"
+              }
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "label": "Authority tier",
+            "name": "authority_tier",
+            "options": [
+              {
+                "label": "Verified payload",
+                "value": "verified_payload"
+              },
+              {
+                "label": "Strong metadata",
+                "value": "strong_metadata"
+              },
+              {
+                "label": "Weak metadata",
+                "value": "weak_metadata"
+              },
+              {
+                "label": "Blocked",
+                "value": "blocked"
+              }
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "label": "Payload status",
+            "name": "payload_status",
+            "options": [
+              {
+                "label": "Present + valid",
+                "value": "present_valid"
+              },
+              {
+                "label": "Metadata only",
+                "value": "metadata_only"
+              },
+              {
+                "label": "Missing/invalid",
+                "value": "missing_or_invalid"
+              }
+            ],
+            "required": true,
+            "type": "select"
+          },
+          {
+            "label": "Retrieval ready",
+            "name": "retrieval_ready",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "label": "Issue flags",
+            "name": "issue_flags",
+            "options": [
+              {
+                "label": "Missing payload",
+                "value": "missing_payload"
+              },
+              {
+                "label": "Invalid NIfTI",
+                "value": "invalid_nifti_header"
+              },
+              {
+                "label": "Missing sidecar",
+                "value": "missing_sidecar"
+              },
+              {
+                "label": "Missing TR",
+                "value": "missing_repetition_time"
+              },
+              {
+                "label": "Not BIDS func",
+                "value": "not_bids_func"
+              },
+              {
+                "label": "Unversioned",
+                "value": "unversioned"
+              },
+              {
+                "label": "License unknown",
+                "value": "license_unknown"
+              },
+              {
+                "label": "Empty payload",
+                "value": "small_or_empty_file"
+              }
+            ],
+            "type": "multi_select"
+          }
+        ]
+      },
+      "status": "approved",
+      "task_type": "fmri_bids_qualification",
+      "updated_at": "2026-05-09T00:03:02Z"
+    }
+  }
+}
