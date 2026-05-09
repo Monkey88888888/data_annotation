@@ -13,6 +13,8 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 import base64
 
+from dotenv import load_dotenv
+
 from data_annotation import demo_poc
 from data_annotation.annotator.image import annotate_image
 from data_annotation.annotator.text import annotate_text
@@ -536,6 +538,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
+    load_dotenv()
     args = parse_args(argv or sys.argv[1:])
     DemoRequestHandler.state_path = args.state
     DemoRequestHandler.export_dir = args.export_dir

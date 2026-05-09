@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>fMRI Annotation POC</title>
     <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/visual.css" />
   </head>
   <body>
     <section id="modeLanding" class="mode-landing">
@@ -22,7 +23,7 @@
         <span class="eyebrow">Choose Workflow</span>
         <h1>Start with the data type you need to qualify.</h1>
         <p>
-          fMRI and text assets use different rubrics, evidence views, and terminal routes.
+          fMRI, text, and image assets use different rubrics, evidence views, and terminal routes.
           Pick a workspace to keep the annotation flow focused.
         </p>
       </div>
@@ -36,6 +37,11 @@
           <span class="mode-kicker">Documents & copy</span>
           <strong>Text Facet Annotator</strong>
           <em>Paste business text and generate structured modality, strictness, and tone facets.</em>
+        </button>
+        <button class="mode-card visual-card" data-mode="visual" type="button">
+          <span class="mode-kicker">Marketing & ads</span>
+          <strong>Visual Facet Annotator</strong>
+          <em>Upload image assets, get vision-model facets, and retrieve or brief from the corpus.</em>
         </button>
       </div>
     </section>
@@ -183,6 +189,98 @@
       </main>
     </div>
 
+    <div id="visualApp" class="visual-app hidden">
+      <header class="visual-topbar">
+        <button class="secondary" data-mode="landing" type="button">All workflows</button>
+        <div>
+          <strong>Platform Alpha | Visual Annotation Workflow</strong>
+          <span>Vision-model facets, Pinecone retrieval, and creative-brief generation</span>
+        </div>
+        <span class="runtime-chip live">image_asset</span>
+      </header>
+
+      <main class="visual-workspace">
+        <section class="panel visual-input-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Image Asset</span>
+              <h2>Upload or drop an image</h2>
+            </div>
+            <span id="visualHashBadge" class="status-pill">no file</span>
+          </div>
+          <label for="visualFileInput" class="visual-dropzone" id="visualDropzone">
+            <input id="visualFileInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+            <div class="visual-dropzone-empty" id="visualDropzonePrompt">
+              <strong>Click to choose</strong>
+              <span>or drag a PNG / JPEG / WEBP / GIF here</span>
+            </div>
+            <img id="visualPreview" class="visual-preview hidden" alt="Selected image preview" />
+          </label>
+          <div class="actions">
+            <button id="runVisualAnnotator" type="button" disabled>Annotate image</button>
+            <button id="clearVisualImage" class="secondary" type="button" disabled>Clear</button>
+          </div>
+        </section>
+
+        <section class="panel visual-result-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Facets</span>
+              <h2>Annotation result</h2>
+            </div>
+          </div>
+          <div id="visualFacetResults" class="visual-facet-results">
+            <div class="empty">Annotate an image to see vision-model facets.</div>
+          </div>
+        </section>
+
+        <section class="panel visual-search-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Pinecone Retrieval</span>
+              <h2>Search the corpus</h2>
+            </div>
+            <label class="visual-plan-toggle">
+              <input id="visualSearchPlan" type="checkbox" checked />
+              <span>Plan weights via Claude</span>
+            </label>
+          </div>
+          <input id="visualSearchPrompt" type="text" class="visual-prompt"
+                 placeholder="e.g. high-trust SOC2 banner, calm corporate palette"
+                 value="confident enterprise SaaS hero with bold typography" />
+          <div class="actions">
+            <button id="runVisualSearch" type="button">Search</button>
+          </div>
+          <div id="visualSearchResults" class="visual-search-results">
+            <div class="empty">Run a search to see top matches from the image corpus.</div>
+          </div>
+        </section>
+
+        <section class="panel visual-generate-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Creative Brief</span>
+              <h2>Generate from retrieved context</h2>
+            </div>
+            <label class="visual-plan-toggle">
+              <input id="visualBriefPlan" type="checkbox" checked />
+              <span>Plan weights via Claude</span>
+            </label>
+          </div>
+          <input id="visualBriefPrompt" type="text" class="visual-prompt"
+                 placeholder="e.g. landing-page hero for a SOC2 compliance launch"
+                 value="landing-page hero introducing our SOC2 audit certification" />
+          <div class="actions">
+            <button id="runVisualBrief" type="button">Generate brief</button>
+          </div>
+          <div id="visualBriefOutput" class="visual-brief-output">
+            <div class="empty">Generated briefs appear here.</div>
+          </div>
+        </section>
+      </main>
+    </div>
+
     <script src="/app.js"></script>
+    <script src="/visual.js" defer></script>
   </body>
 </html>

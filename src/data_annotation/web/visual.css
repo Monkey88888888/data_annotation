@@ -1,0 +1,243 @@
+/* Visual workspace styles. Scoped under .visual-app and visual-* prefixes
+ * so they will not collide with anything in styles.css. The shared
+ * conventions (panel, panel-heading, eyebrow, status-pill, runtime-chip,
+ * actions, secondary, hidden, facet-chip, facet-bar*, empty) come from
+ * styles.css and are reused unchanged here.
+ */
+
+.visual-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #0d1117;
+  color: #f7f9fc;
+}
+
+.visual-topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.visual-topbar > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.visual-topbar strong {
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.visual-topbar span:not(.runtime-chip) {
+  font-size: 12px;
+  color: rgba(247, 249, 252, 0.6);
+  margin-top: 2px;
+}
+
+.visual-workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 24px 28px 40px;
+  align-content: start;
+}
+
+.visual-input-panel,
+.visual-result-panel,
+.visual-search-panel,
+.visual-generate-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* dropzone */
+
+.visual-dropzone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  border: 1.5px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.visual-dropzone:hover,
+.visual-dropzone.is-dragover {
+  border-color: rgba(120, 192, 255, 0.6);
+  background: rgba(120, 192, 255, 0.06);
+}
+
+.visual-dropzone-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.visual-dropzone-empty strong {
+  font-size: 15px;
+}
+
+.visual-dropzone-empty span {
+  font-size: 12px;
+  color: rgba(247, 249, 252, 0.55);
+}
+
+.visual-preview {
+  max-width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.visual-preview.hidden {
+  display: none;
+}
+
+/* facet result tweaks (reuses .facet-* from styles.css) */
+
+.visual-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.visual-facet-results .empty {
+  padding: 14px;
+}
+
+/* search + brief */
+
+.visual-prompt {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: inherit;
+  font-size: 14px;
+}
+
+.visual-prompt:focus {
+  outline: none;
+  border-color: rgba(120, 192, 255, 0.5);
+}
+
+.visual-plan-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(247, 249, 252, 0.7);
+}
+
+.visual-plan-toggle input {
+  margin: 0;
+}
+
+.visual-search-results,
+.visual-brief-output {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 60px;
+}
+
+.visual-match-row {
+  display: flex;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.visual-match-rank {
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  color: rgba(247, 249, 252, 0.55);
+  width: 24px;
+}
+
+.visual-match-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.visual-match-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.visual-score {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: rgba(120, 192, 255, 0.85);
+}
+
+.visual-match-meta {
+  font-size: 11px;
+  color: rgba(247, 249, 252, 0.45);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  word-break: break-all;
+}
+
+.visual-brief-text {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  white-space: pre-wrap;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.visual-brief-sources {
+  font-size: 12px;
+  color: rgba(247, 249, 252, 0.55);
+}
+
+.visual-brief-sources ul {
+  margin: 4px 0 0;
+  padding-left: 16px;
+}
+
+.visual-facet-results .error,
+.visual-search-results .error,
+.visual-brief-output .error {
+  color: #ff8b8b;
+}
+
+/* mode card variant */
+
+.mode-card.visual-card {
+  /* nothing custom required; inherits .mode-card from styles.css.
+   * Adding a kicker accent is fine but optional and intentionally
+   * left for the UI owner to tune. */
+}
+
+/* responsive: stack panels on narrow screens */
+
+@media (max-width: 960px) {
+  .visual-workspace {
+    grid-template-columns: 1fr;
+  }
+}
