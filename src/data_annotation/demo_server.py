@@ -15,7 +15,7 @@ import base64
 
 from dotenv import load_dotenv
 
-from data_annotation import demo_poc
+from data_annotation import demo_poc, image_workflow, text_workflow
 from data_annotation.annotator.image import annotate_image
 from data_annotation.annotator.text import annotate_text
 
@@ -49,6 +49,12 @@ class DemoRequestHandler(BaseHTTPRequestHandler):
             segments = path_segments(path)
             if segments == ["api", "state"]:
                 self.send_json(demo_poc.app_snapshot(state))
+                return
+            if segments == ["api", "text", "snapshot"]:
+                self.send_json(text_workflow.snapshot(state, _safe_supabase_client()))
+                return
+            if segments == ["api", "image", "snapshot"]:
+                self.send_json(image_workflow.snapshot(state, _safe_supabase_client()))
                 return
             if len(segments) == 4 and segments[:2] == ["api", "projects"] and segments[3] == "quality":
                 self.send_json(demo_poc.quality_metrics(state, segments[2]))
@@ -155,6 +161,26 @@ class DemoRequestHandler(BaseHTTPRequestHandler):
                 )
                 demo_poc.save_state(state, self.state_path)
                 self.send_json({"retrieval": run, "snapshot": demo_poc.app_snapshot(state)})
+                return
+
+            if segments == ["api", "text", "projects", "propose"]:
+                request_text = str(payload.get("request_text") or "").strip()
+                project = text_workflow.propose_project(state, request_text)
+                demo_poc.save_state(state, self.state_path)
+                self.send_json({
+                    "project": project,
+                    "snapshot": text_workflow.snapshot(state, _safe_supabase_client()),
+                })
+                return
+
+            if segments == ["api", "image", "projects", "propose"]:
+                request_text = str(payload.get("request_text") or "").strip()
+                project = image_workflow.propose_project(state, request_text)
+                demo_poc.save_state(state, self.state_path)
+                self.send_json({
+                    "project": project,
+                    "snapshot": image_workflow.snapshot(state, _safe_supabase_client()),
+                })
                 return
 
             if segments == ["api", "text", "annotate"]:
@@ -414,6 +440,24 @@ def clamp01(value: float) -> float:
 # a JSON error if the corresponding env vars are missing, so the existing
 # heuristic-only flows (e.g. /api/text/annotate) keep working without keys.
 # ---------------------------------------------------------------------------
+
+_supabase_client_cache: Any = None
+
+
+def _safe_supabase_client() -> Any | None:
+    """Return a SupabaseClient if creds are present, else None.
+    Cached so the snapshot endpoints reuse the same connection.
+    The snapshot helpers tolerate None (they return empty recent_documents)."""
+    global _supabase_client_cache
+    if _supabase_client_cache is not None:
+        return _supabase_client_cache
+    try:
+        from data_annotation.db import SupabaseClient
+        _supabase_client_cache = SupabaseClient()
+    except Exception:
+        _supabase_client_cache = None
+    return _supabase_client_cache
+
 
 def _facet_weights_from_payload(payload: dict[str, Any]) -> dict[str, float]:
     return {
