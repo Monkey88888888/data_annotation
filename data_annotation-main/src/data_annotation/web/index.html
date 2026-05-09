@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FacetLab | Evidence-Aware Data Annotation</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <section id="modeLanding" class="mode-landing">
+      <canvas id="landingCanvas" aria-hidden="true"></canvas>
+      <header class="landing-nav">
+        <div class="brand compact">
+          <div class="brand-mark">F</div>
+          <div>
+            <strong>FacetLab</strong>
+            <span>evidence-aware annotation</span>
+          </div>
+        </div>
+        <nav aria-label="Landing navigation">
+          <a href="#platformModes">Workflows</a>
+          <a href="#landingSystem">Architecture</a>
+          <a href="#landingProof">Operations</a>
+        </nav>
+        <button class="landing-nav-cta" data-mode="fmri" type="button">Open console</button>
+      </header>
+
+      <div class="landing-hero">
+        <div class="landing-copy">
+          <span class="eyebrow">AI data operations for evidence-critical teams</span>
+          <h1>Turn expert data into trusted AI workflows.</h1>
+          <p>
+            FacetLab combines agent-generated task specs, human review, quality
+            telemetry, and faceted retrieval across specialized scientific data
+            and general business text.
+          </p>
+          <div class="landing-actions">
+            <button data-mode="fmri" type="button">Launch fMRI workflow</button>
+            <button class="secondary dark-secondary" data-mode="text" type="button">Open text annotator</button>
+          </div>
+        </div>
+
+        <div class="landing-product" aria-label="FacetLab product preview">
+          <div class="product-topline">
+            <span>Platform Alpha | Multi-Workflow Console</span>
+            <span class="runtime-chip live">Active</span>
+          </div>
+          <div class="product-grid">
+            <div class="product-panel intake-preview">
+              <strong>Project Intake</strong>
+              <p>Qualify OpenNeuro fMRI assets and general text for governed retrieval.</p>
+              <div class="agent-action">
+                <span>Agent Action</span>
+                <b>Rubric, schema, QA policy generated</b>
+              </div>
+            </div>
+            <div class="product-panel annotation-preview">
+              <strong>Annotation UI</strong>
+              <div class="preview-row"><span>Qualification</span><b>Trusted</b></div>
+              <div class="preview-row"><span>Payload</span><b>Verified</b></div>
+              <div class="preview-row"><span>Tone</span><b>Formal 0.72</b></div>
+              <div class="preview-row"><span>Strictness</span><b>Technical 0.61</b></div>
+            </div>
+            <div class="product-panel qa-preview">
+              <strong>Reviewer QA</strong>
+              <div class="quality-bars">
+                <span style="--w: 86%"></span>
+                <span style="--w: 72%"></span>
+                <span style="--w: 91%"></span>
+              </div>
+              <p>Disagreement, confidence, gold checks, and export provenance stay visible.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="landingProof" class="capability-band" aria-label="Platform capabilities">
+        <span>Model evaluation</span>
+        <span>fMRI / BIDS</span>
+        <span>Business text</span>
+        <span>Human review</span>
+        <span>Faceted retrieval</span>
+      </div>
+
+      <div id="platformModes" class="platform-mode-section">
+        <div class="section-heading">
+          <span class="eyebrow">Choose Workflow</span>
+          <h2>Two platforms, one evidence model.</h2>
+          <p>
+            Each workspace keeps its own rubric and evidence surface, while the
+            underlying architecture stays consistent: typed assets, facet rows,
+            quality controls, and exportable provenance.
+          </p>
+        </div>
+        <div class="mode-grid">
+          <button class="mode-card fmri-card" data-mode="fmri" type="button">
+            <span class="mode-kicker">Scientific data</span>
+            <strong>fMRI / BIDS Qualification</strong>
+            <em>Inspect OpenNeuro assets, NIfTI evidence, review queues, and pure retrieval routes.</em>
+          </button>
+          <button class="mode-card text-card" data-mode="text" type="button">
+            <span class="mode-kicker">General text</span>
+            <strong>Text Facet Annotator</strong>
+            <em>Classify business text into modality, strictness, tone, and database-ready facet rows.</em>
+          </button>
+        </div>
+      </div>
+
+      <div id="landingSystem" class="landing-system">
+        <div>
+          <span class="eyebrow">Architecture</span>
+          <h2>Context-aware annotation for every modality.</h2>
+          <p>
+            fMRI scans trigger BIDS, NIfTI, sidecar, and authority checks. Text
+            assets trigger structured facet extraction for modality, tone, and
+            strictness. Both flows feed the same governed annotation and retrieval
+            control plane.
+          </p>
+        </div>
+        <div class="system-board">
+          <span>Archetype Matrix</span>
+          <span>Heuristics Engine</span>
+          <span>AI Pre-label</span>
+          <span>Human Review</span>
+          <span>Quality Telemetry</span>
+          <span>Export / Retrieval</span>
+        </div>
+      </div>
+    </section>
+
+    <div id="fmriApp" class="app-shell hidden">
+      <nav class="utility-rail" aria-label="Application tools">
+        <div class="rail-logo">F</div>
+        <span class="rail-icon active" title="Workspace">▦</span>
+        <span class="rail-icon" title="Datasets">□</span>
+        <span class="rail-icon" title="Review">◇</span>
+        <span class="rail-icon" title="Retrieval">⌁</span>
+        <span class="rail-icon bottom" title="Status">?</span>
+      </nav>
+      <aside class="sidebar">
+          <div class="brand">
+            <div class="brand-mark">HD</div>
+            <div>
+              <strong>FacetLab fMRI</strong>
+              <span>annotation console</span>
+            </div>
+          </div>
+        <button class="mode-switch secondary full-width" data-mode="landing" type="button">All workflows</button>
+        <nav id="projectList" class="project-list" aria-label="Projects"></nav>
+        <nav class="workflow-nav" aria-label="Workflow pages">
+          <button class="workflow-tab active" data-page="setup" type="button">
+            1. Setup
+            <span>project, rubric, activity</span>
+          </button>
+          <button class="workflow-tab" data-page="annotate" type="button">
+            2. Annotate
+            <span>task, labels, queue</span>
+          </button>
+          <button class="workflow-tab" data-page="review" type="button">
+            3. Review
+            <span>evidence, retrieval, export</span>
+          </button>
+        </nav>
+        <button id="resetBtn" class="secondary full-width" type="button">Reset demo</button>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="topbar-title">
+            <strong>Platform Alpha | Annotation Workflow</strong>
+            <span>Human-in-the-loop qualification for trusted fMRI retrieval</span>
+          </div>
+          <form id="proposalForm" class="proposal-form">
+            <input
+              id="requestInput"
+              name="request"
+              type="text"
+              autocomplete="off"
+              value="Qualify OpenNeuro fMRI BIDS assets for high-authority retrieval."
+            />
+            <button type="submit">Draft project</button>
+          </form>
+          <div class="topbar-actions" aria-label="Runtime status">
+            <span class="runtime-chip live">Active</span>
+            <span class="runtime-chip">2 AI</span>
+            <span class="runtime-chip">3 Human</span>
+          </div>
+        </header>
+
+        <div class="workspace paged-workspace">
+          <section class="page page-setup active" data-page-panel="setup">
+            <section class="panel" id="projectPanel"></section>
+            <section class="panel" id="specPanel"></section>
+            <section class="panel" id="activityPanel"></section>
+          </section>
+
+          <section class="page page-annotate" data-page-panel="annotate">
+            <section class="panel task-panel" id="taskPanel"></section>
+            <section class="panel" id="queuePanel"></section>
+          </section>
+
+          <section class="page page-review" data-page-panel="review">
+            <section class="panel scan-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="eyebrow">Vector Evidence</span>
+                  <h2>Faceted scan view</h2>
+                </div>
+              </div>
+              <canvas id="scanCanvas" width="720" height="420" aria-label="fMRI vector preview"></canvas>
+            </section>
+            <section class="panel" id="qualityPanel"></section>
+            <section class="panel" id="retrievalPanel"></section>
+            <section class="panel" id="exportPanel"></section>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="textApp" class="text-app hidden">
+      <header class="text-topbar">
+        <button class="secondary" data-mode="landing" type="button">All workflows</button>
+        <div>
+          <strong>Platform Alpha | Text Annotation Workflow</strong>
+          <span>Facet extraction for B2B email, landing pages, strictness, and tone</span>
+        </div>
+        <span class="runtime-chip live">text_document</span>
+      </header>
+
+      <main class="text-workspace">
+        <section class="panel text-input-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Text Asset</span>
+              <h2>Paste source text</h2>
+            </div>
+          </div>
+          <textarea id="textPayload" class="text-payload" spellcheck="true">Hi Jordan, your analytics team can cut manual reporting time by connecting pipeline metrics, model evaluation, and compliance-ready exports in one workspace. Want to see a 15 minute demo this week?</textarea>
+          <div class="text-samples">
+            <button class="secondary" data-sample="email" type="button">B2B email</button>
+            <button class="secondary" data-sample="landing" type="button">Landing page</button>
+            <button class="secondary" data-sample="policy" type="button">Policy text</button>
+          </div>
+          <div class="actions">
+            <button id="runTextAnnotator" type="button">Annotate text</button>
+          </div>
+        </section>
+
+        <section class="panel text-result-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Facets</span>
+              <h2>Annotation result</h2>
+            </div>
+            <span id="textHashBadge" class="status-pill">not run</span>
+          </div>
+          <div id="textFacetResults" class="text-facet-results">
+            <div class="empty">Run the text annotator to generate facet scores.</div>
+          </div>
+        </section>
+
+        <section class="panel text-json-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Payload</span>
+              <h2>Database row preview</h2>
+            </div>
+          </div>
+          <div class="export-box large"><code id="textJsonOutput">{}</code></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

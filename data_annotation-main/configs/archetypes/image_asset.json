@@ -1,0 +1,48 @@
+{
+  "id": "image_asset",
+  "version": "0.1.0",
+  "description": "Business image assets (ads, hero images, infographics, screenshots).",
+  "dimension": 10000,
+  "facets": [
+    {
+      "name": "authority_base",
+      "seed": "authority:business-image-source",
+      "role": "Authority column to be replaced per asset after heuristic + LLM-attested source checks."
+    },
+    {
+      "name": "type",
+      "seed": "type:business-image",
+      "value": "business_image"
+    },
+    {
+      "name": "modality",
+      "seed": "modality:image-banner-or-hero",
+      "value": "banner_or_hero"
+    },
+    {
+      "name": "strictness",
+      "seed": "strictness:llm-annotated",
+      "value": "llm_annotated"
+    },
+    {
+      "name": "tone",
+      "seed": "tone:llm-annotated",
+      "value": "llm_annotated"
+    }
+  ],
+  "source_requirements": {
+    "accepted_formats": [".png", ".jpg", ".jpeg", ".webp", ".gif"],
+    "minimum_metadata": [
+      "source_url_or_origin",
+      "captured_at"
+    ]
+  },
+  "authority_rubric": {
+    "checks": [
+      "source domain is on the allow-list",
+      "captured_at within last 365 days",
+      "non-empty payload",
+      "supported image format magic bytes"
+    ]
+  }
+}
