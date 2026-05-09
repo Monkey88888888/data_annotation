@@ -145,7 +145,51 @@
         <span class="runtime-chip live">text_document</span>
       </header>
 
-      <main class="text-workspace">
+      <nav class="workflow-nav workspace-tabs" aria-label="Text workflow pages">
+        <button class="workflow-tab" data-text-page="setup" type="button">
+          1. Setup
+          <span>project, activity</span>
+        </button>
+        <button class="workflow-tab active" data-text-page="annotate" type="button">
+          2. Annotate
+          <span>paste, facets</span>
+        </button>
+        <button class="workflow-tab" data-text-page="review" type="button">
+          3. Review
+          <span>retrieve, generate</span>
+        </button>
+      </nav>
+
+      <section class="workspace-page workspace-page-setup" data-text-page-panel="setup">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Project</span>
+              <h2>Start a text annotation project</h2>
+            </div>
+          </div>
+          <form id="textProposalForm" class="proposal-form">
+            <input id="textRequestInput" name="text-request" type="text" autocomplete="off"
+              placeholder="What text are you qualifying?"
+              value="Qualify B2B sales emails for compliance copy" />
+            <button type="submit">Create project</button>
+          </form>
+          <div id="textProjectsList" class="project-tabs"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Activity</span>
+              <h2>Recent events</h2>
+            </div>
+          </div>
+          <div id="textActivityList" class="activity-list">
+            <div class="empty">No activity yet -- create a project to get started.</div>
+          </div>
+        </section>
+      </section>
+
+      <main class="text-workspace workspace-page active" data-text-page-panel="annotate">
         <section class="panel text-input-panel">
           <div class="panel-heading">
             <div>
@@ -187,6 +231,52 @@
           <div class="export-box large"><code id="textJsonOutput">{}</code></div>
         </section>
       </main>
+
+      <section class="workspace-page workspace-page-review" data-text-page-panel="review">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Pinecone Retrieval</span>
+              <h2>Search the text corpus</h2>
+            </div>
+            <label class="visual-plan-toggle">
+              <input id="textSearchPlan" type="checkbox" checked />
+              <span>Plan weights via Claude</span>
+            </label>
+          </div>
+          <input id="textSearchPrompt" type="text" class="visual-prompt"
+                 placeholder="e.g. high-authority B2B compliance email"
+                 value="high-authority B2B email about SOC2 compliance" />
+          <div class="actions">
+            <button id="runTextSearch" type="button">Search</button>
+          </div>
+          <div id="textSearchResults" class="visual-search-results">
+            <div class="empty">Run a search to see top matches from the text corpus.</div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Generation</span>
+              <h2>Write new copy from retrieved style</h2>
+            </div>
+            <label class="visual-plan-toggle">
+              <input id="textGeneratePlan" type="checkbox" checked />
+              <span>Plan weights via Claude</span>
+            </label>
+          </div>
+          <input id="textGeneratePrompt" type="text" class="visual-prompt"
+                 placeholder="e.g. Q3 outbound for our SOC2 launch"
+                 value="Q3 outbound email about our SOC2 audit certification" />
+          <div class="actions">
+            <button id="runTextGenerate" type="button">Generate text</button>
+          </div>
+          <div id="textGenerateOutput" class="visual-brief-output">
+            <div class="empty">Generated text appears here.</div>
+          </div>
+        </section>
+      </section>
     </div>
 
     <div id="visualApp" class="visual-app hidden">
@@ -199,7 +289,51 @@
         <span class="runtime-chip live">image_asset</span>
       </header>
 
-      <main class="visual-workspace">
+      <nav class="workflow-nav workspace-tabs" aria-label="Visual workflow pages">
+        <button class="workflow-tab" data-visual-page="setup" type="button">
+          1. Setup
+          <span>project, activity</span>
+        </button>
+        <button class="workflow-tab active" data-visual-page="annotate" type="button">
+          2. Annotate
+          <span>upload, facets</span>
+        </button>
+        <button class="workflow-tab" data-visual-page="review" type="button">
+          3. Review
+          <span>retrieve, brief</span>
+        </button>
+      </nav>
+
+      <section class="workspace-page workspace-page-setup" data-visual-page-panel="setup">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Project</span>
+              <h2>Start a visual annotation project</h2>
+            </div>
+          </div>
+          <form id="visualProposalForm" class="proposal-form">
+            <input id="visualRequestInput" name="visual-request" type="text" autocomplete="off"
+              placeholder="What images are you qualifying?"
+              value="Qualify SaaS landing page hero images for trust signals" />
+            <button type="submit">Create project</button>
+          </form>
+          <div id="visualProjectsList" class="project-tabs"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">Activity</span>
+              <h2>Recent events</h2>
+            </div>
+          </div>
+          <div id="visualActivityList" class="activity-list">
+            <div class="empty">No activity yet -- create a project to get started.</div>
+          </div>
+        </section>
+      </section>
+
+      <main class="visual-workspace workspace-page active" data-visual-page-panel="annotate">
         <section class="panel visual-input-panel">
           <div class="panel-heading">
             <div>
@@ -233,7 +367,9 @@
             <div class="empty">Annotate an image to see vision-model facets.</div>
           </div>
         </section>
+      </main>
 
+      <section class="workspace-page workspace-page-review" data-visual-page-panel="review">
         <section class="panel visual-search-panel">
           <div class="panel-heading">
             <div>
@@ -277,10 +413,11 @@
             <div class="empty">Generated briefs appear here.</div>
           </div>
         </section>
-      </main>
+      </section>
     </div>
 
     <script src="/app.js"></script>
     <script src="/visual.js" defer></script>
+    <script src="/text.js" defer></script>
   </body>
 </html>

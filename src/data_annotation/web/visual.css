@@ -241,3 +241,76 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ------------------------------------------------------------------- *
+ * Three-page nav (shared by text-app and visual-app).
+ * Reuses .workflow-nav / .workflow-tab from styles.css; this file only
+ * adds the page panel show/hide rule and the page-specific grids.
+ * ------------------------------------------------------------------- */
+
+.workspace-tabs {
+  margin: 0 28px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.workspace-page {
+  display: none;
+}
+
+.workspace-page.active {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px 28px 40px;
+  align-content: start;
+}
+
+.workspace-page-setup {
+  /* one full-width column for setup; the project panel stretches */
+  grid-template-columns: minmax(360px, 1fr) minmax(360px, 1fr);
+}
+
+.workspace-page-review.active {
+  /* identical to default 1fr 1fr -- explicit for clarity */
+  grid-template-columns: 1fr 1fr;
+}
+
+/* When .workspace-page is itself the existing visual-workspace or
+ * text-workspace <main>, both layouts apply -- avoid clobbering the
+ * inner grid that those classes already set. */
+
+.text-workspace.workspace-page,
+.visual-workspace.workspace-page {
+  display: none;
+}
+
+.text-workspace.workspace-page.active,
+.visual-workspace.workspace-page.active {
+  display: grid;
+}
+
+/* project list inside Setup page (reuses .project-tabs / .project-tab from styles.css) */
+
+.project-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.project-tabs:empty::before {
+  content: "No projects yet.";
+  color: rgba(247, 249, 252, 0.45);
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+@media (max-width: 960px) {
+  .workspace-page.active,
+  .workspace-page-setup {
+    grid-template-columns: 1fr;
+  }
+}

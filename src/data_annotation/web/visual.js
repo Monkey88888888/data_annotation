@@ -10,10 +10,105 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     bindModeSwitching();
+    bindPageNav();
+    bindProposal();
     bindUploadHandlers();
     bindSearchHandler();
     bindBriefHandler();
+    refreshSnapshot();
   });
+
+  // --- page nav ---------------------------------------------------------
+
+  function bindPageNav() {
+    document.querySelectorAll('[data-visual-page]').forEach(function (button) {
+      button.addEventListener("click", function () {
+        const page = button.dataset.visualPage;
+        document.querySelectorAll('[data-visual-page]').forEach(function (b) {
+          b.classList.toggle("active", b.dataset.visualPage === page);
+        });
+        document.querySelectorAll('[data-visual-page-panel]').forEach(function (panel) {
+          panel.classList.toggle("active", panel.dataset.visualPagePanel === page);
+        });
+        if (page === "setup") refreshSnapshot();
+      });
+    });
+  }
+
+  // --- Setup: project intake + project list -----------------------------
+
+  function bindProposal() {
+    const form = document.getElementById("visualProposalForm");
+    if (!form) return;
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const input = document.getElementById("visualRequestInput");
+      const requestText = input.value.trim();
+      if (!requestText) return;
+      const submit = form.querySelector("button[type=submit]");
+      submit.disabled = true;
+      submit.textContent = "Creating";
+      try {
+        const data = await postJson("/api/image/projects/propose", { request_text: requestText });
+        renderSnapshot(data.snapshot);
+        input.select();
+      } catch (err) {
+        renderProposalError(err.message);
+      } finally {
+        submit.disabled = false;
+        submit.textContent = "Create project";
+      }
+    });
+  }
+
+  async function refreshSnapshot() {
+    try {
+      const snap = await fetchJson("/api/image/snapshot");
+      renderSnapshot(snap);
+    } catch (err) {
+      console.error("visual snapshot failed", err);
+    }
+  }
+
+  function renderSnapshot(snap) {
+    if (!snap) return;
+    renderProjects(snap.projects || [], snap.active_project_id);
+    renderActivity(snap.activity || []);
+  }
+
+  function renderProjects(projects, activeId) {
+    const container = document.getElementById("visualProjectsList");
+    if (!container) return;
+    container.innerHTML = projects.map(function (project) {
+      const cls = project.id === activeId ? "project-tab active" : "project-tab";
+      return '<button type="button" class="' + cls + '">' +
+        '<strong>' + escapeHtml(project.name) + '</strong>' +
+        '<span>' + escapeHtml(project.objective || project.request_text || "") + '</span>' +
+      '</button>';
+    }).join("");
+  }
+
+  function renderActivity(activity) {
+    const list = document.getElementById("visualActivityList");
+    if (!list) return;
+    if (!activity.length) {
+      list.innerHTML = '<div class="empty">No activity yet -- create a project to get started.</div>';
+      return;
+    }
+    list.innerHTML = activity.map(function (entry) {
+      return '<div class="activity-item">' +
+        '<strong>' + escapeHtml(entry.title || "") + '</strong>' +
+        '<span>' + escapeHtml(entry.detail || "") + '</span>' +
+        '<time>' + escapeHtml(entry.created_at || "") + '</time>' +
+      '</div>';
+    }).join("");
+  }
+
+  function renderProposalError(message) {
+    const list = document.getElementById("visualActivityList");
+    if (!list) return;
+    list.innerHTML = '<div class="empty error">' + escapeHtml(message) + '</div>';
+  }
 
   // ---- mode toggle ------------------------------------------------------
 
@@ -258,6 +353,15 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+    const payload = await response.json();
+    if (!response.ok || payload.error) {
+      throw new Error(payload.error || "Request failed: " + response.status);
+    }
+    return payload;
+  }
+
+  async function fetchJson(path) {
+    const response = await fetch(path);
     const payload = await response.json();
     if (!response.ok || payload.error) {
       throw new Error(payload.error || "Request failed: " + response.status);
