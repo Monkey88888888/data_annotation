@@ -112,13 +112,18 @@ def search(
     prompt: str,
     *,
     weights: dict[str, float] | None = None,
+    plan_prompt: bool = False,
     top_k: int = 10,
     manifold_dimension: int = DEFAULT_MANIFOLD_DIMENSION,
     archetype_filter: str | None = None,
     enrich: bool = False,
     pinecone_index: PineconeIndex | None = None,
     document_fetcher: DocumentFetcher | None = None,
+    planner_client: Any = None,
 ) -> list[SearchMatch]:
+    if plan_prompt and weights is None:
+        from data_annotation.query_planner import plan_query
+        weights = plan_query(prompt, client=planner_client) if planner_client else plan_query(prompt)
     weights = weights or {f: 1.0 for f in FACET_ORDER}
     query_vector = build_query_vector(prompt, weights, manifold_dimension)
 
@@ -188,6 +193,9 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
                         help="Restrict to one archetype id (e.g. text_document).")
     parser.add_argument("--enrich", action="store_true",
                         help="Fetch the documents_raw row for each match.")
+    parser.add_argument("--plan", action="store_true",
+                        help="Use Claude to translate the prompt into per-facet weights "
+                             "(overrides the --*-weight flags).")
     parser.add_argument("--authority-weight", type=float, default=1.0)
     parser.add_argument("--type-weight", type=float, default=1.0)
     parser.add_argument("--modality-weight", type=float, default=1.0)
@@ -222,7 +230,8 @@ def main(argv: list[str] | None = None) -> int:
 
     matches = search(
         args.prompt,
-        weights=_weights_from_args(args),
+        weights=None if args.plan else _weights_from_args(args),
+        plan_prompt=args.plan,
         top_k=args.top_k,
         manifold_dimension=args.manifold_dimension,
         archetype_filter=args.archetype_filter,
