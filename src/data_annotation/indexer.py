@@ -172,13 +172,19 @@ def _vector_metadata(row: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _build_pinecone_index() -> PineconeIndex:
+def build_pinecone_index() -> PineconeIndex:
+    """Construct the live Pinecone index handle from env vars. Public so
+    other modules (pinecone_search) can reuse it."""
     api_key = os.environ.get("PINECONE_API_KEY")
     index_name = os.environ.get("PINECONE_INDEX") or "annotation"
     if not api_key:
         raise RuntimeError("PINECONE_API_KEY not set")
     from pinecone import Pinecone  # local import — soft dependency
     return Pinecone(api_key=api_key).Index(index_name)
+
+
+# Backwards-compat alias kept private name working in case anyone imported it.
+_build_pinecone_index = build_pinecone_index
 
 
 # ---------------------------------------------------------------------------
@@ -289,7 +295,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     client = SupabaseClient()
-    pinecone_index = _build_pinecone_index() if not args.dry_run else _NoopPineconeIndex()
+    pinecone_index = build_pinecone_index() if not args.dry_run else _NoopPineconeIndex()
 
     outcomes = index_batch(
         client=client,

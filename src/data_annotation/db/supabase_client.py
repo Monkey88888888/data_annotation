@@ -121,6 +121,19 @@ class SupabaseClient:
     def delete(self, row_id: str) -> None:
         self._client.table(TABLE).delete().eq("id", row_id).execute()
 
+    def fetch_by_ids(self, ids: list[str]) -> dict[str, dict[str, Any]]:
+        """Bulk fetch by primary key. Returns a dict keyed on id for quick
+        join with Pinecone match lists."""
+        if not ids:
+            return {}
+        result = (
+            self._client.table(TABLE)
+            .select("*")
+            .in_("id", ids)
+            .execute()
+        )
+        return {str(row["id"]): row for row in result.data}
+
     # ------------------------------------------------------------------
     # Annotation cache
     # ------------------------------------------------------------------
